@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/lucide-static@0.460.0/font/lucide.css">
+<style>body{margin:0}a{color:#7435d5}a:hover{color:#6024be}button{font:inherit;cursor:pointer;border:0;background:none;padding:0;color:inherit;text-align:left}input{font:inherit}input:focus{outline:none;border-color:#9f7aea!important;box-shadow:0 0 0 3px #7c3aed10}button:focus-visible{outline:2px solid #7c3aed;outline-offset:2px}</style>
+</helmet>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="position:relative;height:874px;background:#f7f8fa;color:#24252b;font-family:'Inter','Segoe UI',Arial,sans-serif;letter-spacing:-.015em;overflow:hidden;font-size:14px;line-height:1.5">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;padding:78px 26px 40px">
+  <div style="display:flex;align-items:center;gap:9px;font-size:18px;font-weight:700;letter-spacing:-.8px;color:#24212f"><img src="assets/nexo-mark.svg" width="34" height="34" style="border-radius:9px;display:block" alt=""><span>Nexo <b style="font-weight:700">Gestão</b></span></div>
+  <div style="margin-top:56px;width:59px;height:59px;border-radius:16px;background:#f1e7fd;color:#7c3aed;display:grid;place-items:center;font-size:28px"><i class="icon-calendar-days"></i></div>
+  <h2 style="margin:26px 0 10px;font-size:30px;letter-spacing:-1px;color:#202128;font-weight:600;line-height:1.2">Bom ter você de volta.</h2>
+  <p style="margin:0;font-size:15px;line-height:1.7;color:#6c707c">Acesse seu espaço e organize seu negócio com tranquilidade.</p>
+  <div style="display:flex;flex-direction:column;gap:16px;margin-top:28px">
+    <label style="display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600;color:#24252b">E-mail<input value="{{ loginEmail }}" onChange="{{ onLoginEmail }}" type="email" placeholder="voce@seunegocio.com" style="border:1px solid #d4d4d8;border-radius:10px;padding:12px;font-size:16px;background:#fff;color:#18181b"></label>
+    <label style="display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600;color:#24252b">Senha<input value="{{ loginPass }}" onChange="{{ onLoginPass }}" type="password" placeholder="Sua senha" style="border:1px solid #d4d4d8;border-radius:10px;padding:12px;font-size:16px;background:#fff;color:#18181b"></label>
+    <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}"><div style="background:#fff1f1;border:1px solid #f4d2d2;padding:12px 15px;border-radius:8px;color:#ad3939;font-size:13px;line-height:1.6">{{ loginError }}</div></sc-if>
+    <button onClick="{{ doLogin }}" style="display:flex;align-items:center;justify-content:center;gap:9px;min-height:53px;border-radius:9px;background:#7435d5;color:#fff;font-size:15px;font-weight:600" style-hover="background:#6024be">{{ loginLabel }}<i class="icon-arrow-right" style="font-size:17px"></i></button>
+    <button style="text-align:center;font-size:13px;color:#6d28d9">Esqueci minha senha</button>
+  </div>
+  <div style="margin-top:auto;border-top:1px solid #eceef2;padding-top:22px;font-size:13px;color:#6c707c;text-align:center">Ainda não tem conta?<button onClick="{{ goOnboarding }}" style="color:#7435d5;font-weight:600;margin-left:4px">Criar conta</button></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#faf8fd;display:flex;flex-direction:column;padding:64px 18px 34px">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px"><div style="display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;letter-spacing:-.8px;color:#24212f"><img src="assets/nexo-mark.svg" width="30" height="30" style="border-radius:8px;display:block" alt="">Nexo Gestão</div><button onClick="{{ goLogin }}" style="font-size:12px;color:#7435d5;font-weight:600">Já tenho conta</button></div>
+  <sc-if value="{{ obDone }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#fff;border:1px solid #e9e0f2;border-radius:15px;padding:40px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;flex:1">
+      <span style="color:#399470;font-size:48px;margin-top:40px"><i class="icon-circle-check"></i></span>
+      <h2 style="margin:18px 0 0;font-size:25px;font-weight:600;letter-spacing:-.6px;color:#202128">Tudo pronto!</h2>
+      <p style="margin:16px 0 30px;font-size:14px;line-height:1.85;color:#6c707c">Seu espaço no Nexo Gestão está configurado. Agora você já pode cadastrar clientes e começar a organizar seus atendimentos.</p>
+      <button onClick="{{ finishOnboarding }}" style="display:flex;align-items:center;justify-content:center;gap:9px;min-height:53px;width:100%;border-radius:9px;background:#7435d5;color:#fff;font-size:15px;font-weight:600" style-hover="background:#6024be">Ir para o painel<i class="icon-arrow-right" style="font-size:18px"></i></button>
+    </div>
+  </sc-if>
+  <sc-if value="{{ obNotDone }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#fff;border:1px solid #e9e0f2;border-radius:15px;padding:26px 20px;display:flex;flex-direction:column;flex:1;min-height:0">
+    <span style="font-size:10px;letter-spacing:1px;color:#8b819b;font-weight:600">ETAPA {{ obStepNum }} DE 4</span>
+    <div style="height:4px;border-radius:4px;background:#f0e6f8;margin:12px 0 22px;overflow:hidden"><div style="height:100%;background:#7c3aed;border-radius:4px;width:{{ obProgress }}"></div></div>
+    <h2 style="margin:0;font-size:23px;line-height:1.3;letter-spacing:-.6px;font-weight:600;color:#202128">{{ obTitle }}</h2>
+    <p style="margin:10px 0 22px;font-size:13px;color:#6c707c;line-height:1.7">Você pode ajustar todas essas informações depois.</p>
+    <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:16px">
+      <sc-if value="{{ ob0 }}" hint-placeholder-val="{{ true }}">
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500;color:#4f5260">Seu nome completo *<input value="{{ obName }}" onChange="{{ onObName }}" placeholder="Como podemos chamar você?" style="border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:16px"></label>
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500;color:#4f5260">Nome do negócio *<input value="{{ obBiz }}" onChange="{{ onObBiz }}" placeholder="Ex.: Barbearia Imperial" style="border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:16px"></label>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;font-weight:500;color:#4f5260">Tipo de negócio
+          <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ obTypes }}" as="t" hint-placeholder-count="5"><button onClick="{{ t.pick }}" style="padding:8px 12px;border-radius:8px;font-size:13px;border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.fg }};font-weight:500">{{ t.label }}</button></sc-for></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ ob1 }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid #e9e0f1;border-radius:10px;overflow:hidden">
+          <sc-for list="{{ obHours }}" as="h" hint-placeholder-count="7">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid #eee6f6">
+              <button onClick="{{ h.toggle }}" style="display:flex;align-items:center;gap:10px"><span style="width:36px;height:21px;border-radius:20px;background:{{ h.track }};position:relative;display:block"><span style="position:absolute;top:2px;left:{{ h.knob }};width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0002"></span></span><b style="font-size:13px;font-weight:500;color:#4f5260">{{ h.day }}</b></button>
+              <span style="font-size:12px;color:{{ h.textColor }}">{{ h.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ ob2 }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:8px"><input value="{{ obSvc }}" onChange="{{ onObSvc }}" placeholder="Ex.: Corte masculino" style="flex:1;border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:16px;min-width:0"><button onClick="{{ addObSvc }}" style="display:flex;align-items:center;gap:6px;padding:0 13px;border-radius:8px;border:1px solid #dedfe6;background:#fff;color:#4f5260;font-size:13px;font-weight:600"><i class="icon-plus"></i>Adicionar</button></div>
+        <div>
+          <sc-for list="{{ obSvcs }}" as="s" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:10px;border-bottom:1px solid #f0e5f9;padding:13px 0;color:#835aaf"><i class="icon-scissors" style="font-size:16px"></i><span style="flex:1"><b style="display:block;font-size:13px;font-weight:550;color:#24252b">{{ s.name }}</b><small style="display:block;font-size:11px;color:#737785;margin-top:2px">{{ s.meta }}</small></span><button onClick="{{ s.remove }}" style="padding:6px;color:#9b939f"><i class="icon-trash-2" style="font-size:15px"></i></button></div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ ob3 }}" hint-placeholder-val="{{ false }}">
+        <sc-for list="{{ obModes }}" as="m" hint-placeholder-count="2">
+          <button onClick="{{ m.pick }}" style="display:flex;align-items:center;gap:12px;padding:17px;border:1px solid {{ m.border }};border-radius:9px;font-size:14px;color:#24252b;background:{{ m.bg }}"><span style="width:18px;height:18px;border-radius:50%;border:1.5px solid {{ m.ring }};display:grid;place-items:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ m.dot }}"></span></span>{{ m.label }}</button>
+        </sc-for>
+      </sc-if>
+    </div>
+    <div style="display:flex;gap:10px;padding-top:18px;margin-top:16px;border-top:1px solid #f0e9f6">
+      <sc-if value="{{ obCanBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ obBack }}" style="display:flex;align-items:center;gap:8px;padding:0 15px;min-height:46px;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-weight:600;font-size:14px"><i class="icon-arrow-left"></i>Voltar</button></sc-if>
+      <button onClick="{{ obNext }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:9px;min-height:46px;border-radius:8px;background:#7435d5;color:#fff;font-weight:600;font-size:14px" style-hover="background:#6024be">{{ obNextLabel }}<i class="icon-arrow-right"></i></button>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;overflow-y:auto;padding:58px 0 104px">
+
+<sc-if value="{{ tabInicio }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 18px 0">
+    <div style="display:flex;align-items:center;gap:9px;min-width:0"><span style="width:32px;height:32px;border-radius:8px;display:grid;place-items:center;background:#7c3aed16;color:#7c3aed;font-size:17px"><i class="icon-store"></i></span><div style="min-width:0"><b style="display:block;font-size:12px;font-weight:620;color:#24252b">Studio Aurora</b><small style="display:block;font-size:11px;color:#767987">Salão de beleza</small></div></div>
+    <div style="display:flex;align-items:center;gap:6px"><button onClick="{{ goAvisos }}" style="position:relative;width:40px;height:40px;display:grid;place-items:center;color:#626674;font-size:20px;border-radius:8px" style-hover="background:#f1ebfb;color:#7c3aed"><i class="icon-bell"></i><sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:9px;right:10px;width:6px;height:6px;background:#7c3aed;border-radius:50%;outline:2px solid #f7f8fa"></span></sc-if></button><span style="width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:600;background:#7C3AED13;color:#7C3AED">MC</span></div>
+  </div>
+
+  <sc-if value="{{ varA }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:22px 18px 0">
+    <div style="font-size:10px;color:#727582;font-weight:650;letter-spacing:1.25px;margin-bottom:6px">SEU NEGÓCIO EM DIA</div>
+    <h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Bom dia, Marina</h1>
+    <p style="margin:6px 0 0;font-size:13px;color:#6c707c">Veja como está o seu negócio hoje.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:20px 0 18px">
+      <div style="background:#fff;border:1px solid #ded5ee;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Faturamento<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f1ebfb;color:#7143b3;font-size:15px"><i class="icon-wallet"></i></span></div>
+        <strong style="display:block;font-size:22px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#7c3aed;font-variant-numeric:tabular-nums">{{ mRevenue }}</strong>
+        <div style="font-size:11px;color:#39a17e;line-height:1.5">Recebido hoje</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Agendamentos<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f5f4f8;color:#786b8c;font-size:15px"><i class="icon-calendar-days"></i></span></div>
+        <strong style="display:block;font-size:22px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#22242b">{{ mAppts }}</strong>
+        <div style="font-size:11px;color:#727582;line-height:1.5">{{ mCompletedNote }}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Ticket médio<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f5f4f8;color:#786b8c;font-size:15px"><i class="icon-trending-up"></i></span></div>
+        <strong style="display:block;font-size:22px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#22242b;font-variant-numeric:tabular-nums">{{ mTicket }}</strong>
+        <div style="font-size:11px;color:#727582;line-height:1.5">Atendimentos pagos</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Clientes atendidos<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f5f4f8;color:#786b8c;font-size:15px"><i class="icon-users"></i></span></div>
+        <strong style="display:block;font-size:22px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#22242b">{{ mAttended }}</strong>
+        <div style="font-size:11px;color:#727582;line-height:1.5">Pessoas que passaram por aqui</div>
+      </div>
+    </div>
+    <section style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 18px 8px">
+        <div><h2 style="margin:0;font-size:15px;font-weight:600;color:#262830;display:flex;align-items:center;gap:7px">Agenda de hoje <span style="font-size:10px;background:#f0eafa;color:#7c3aed;padding:2px 6px;border-radius:5px;font-weight:500">{{ todayCount }}</span></h2><p style="margin:4px 0 0;font-size:12px;color:#737785">terça-feira, 27 de outubro</p></div>
+        <button onClick="{{ goAgenda }}" style="width:36px;height:36px;display:grid;place-items:center;border-radius:8px;color:#7a7689;font-size:19px" style-hover="background:#f2eefb;color:#7c3aed"><i class="icon-arrow-up-right"></i></button>
+      </div>
+      <div style="padding:0 17px">
+        <sc-for list="{{ todayTop }}" as="a" hint-placeholder-count="5">
+          <button onClick="{{ a.open }}" style="width:100%;display:flex;align-items:center;gap:9px;border-bottom:1px solid #f2edf7;padding:14px 0">
+            <span style="width:40px;flex-shrink:0"><strong style="font-size:13px;color:#33343e;display:block;font-weight:550;letter-spacing:-.4px">{{ a.time }}</strong><small style="font-size:10px;color:#8a8e98;display:block;margin-top:2px">{{ a.durLabel }}</small></span>
+            <span style="width:2px;height:29px;border-radius:5px;opacity:.6;background:{{ a.color }}"></span>
+            <div style="min-width:0;flex:1"><strong style="display:block;font-size:13px;font-weight:550;color:#24252b">{{ a.clientName }}</strong><small style="display:block;font-size:11px;color:#737785;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.svcName }} · {{ a.proFirst }}</small></div>
+            <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 6px;border-radius:5px;font-size:10px;white-space:nowrap;font-weight:500;color:{{ a.sFg }};background:{{ a.sBg }}"><span style="width:3px;height:3px;border-radius:50%;background:currentColor"></span>{{ a.status }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <button onClick="{{ goAgenda }}" style="display:flex;align-items:center;justify-content:center;gap:7px;border-top:1px solid #eee8f6;padding:14px;width:100%;font-size:12px;color:#7435d5;font-weight:500;text-align:center" style-hover="background:#faf7ff">Ver agenda completa<i class="icon-arrow-right" style="font-size:15px"></i></button>
+    </section>
+    <section style="margin:20px 0 4px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;color:#262830">Ações rápidas</h2><span style="font-size:11px;color:#737785;display:block;margin:2px 0 12px">Um atalho para o seu dia.</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <sc-for list="{{ quick }}" as="q" hint-placeholder-count="4">
+          <button onClick="{{ q.go }}" style="background:#fff;border:1px solid #e6e7ec;border-radius:9px;padding:11px 9px;display:flex;align-items:center;gap:7px;font-size:12px;color:#4f5260;min-height:50px" style-hover="border-color:#c9b3e5;background:#fcfaff"><span style="background:#f5f3f8;color:#776887;width:28px;height:28px;border-radius:7px;display:grid;place-items:center;font-size:16px;flex-shrink:0"><i class="{{ q.icon }}"></i></span><span style="flex:1;line-height:1.3">{{ q.label }}</span><i class="icon-plus" style="font-size:12px;color:#b9aec6"></i></button>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ varB }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:22px 18px 0">
+    <div style="font-size:10px;color:#727582;font-weight:650;letter-spacing:1.25px;margin-bottom:6px">TERÇA-FEIRA, 27 DE OUTUBRO</div>
+    <h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Seu dia, hora a hora</h1>
+    <div style="margin:16px 0 0;background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:14px 15px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:#626672"><span><b style="font-size:17px;color:#22242b;font-weight:600;letter-spacing:-.4px">{{ mCompleted }}</b> de {{ mAppts }} concluídos</span><span style="color:#7c3aed;font-weight:600;font-variant-numeric:tabular-nums">{{ mRevenue }}</span></div>
+      <div style="height:7px;border-radius:5px;background:#f4edfa;margin-top:10px;overflow:hidden"><span style="display:block;height:100%;border-radius:5px;background:#b095d8;width:{{ progressPct }}"></span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin:16px -18px 4px;padding:0 18px;overflow-x:auto">
+      <sc-for list="{{ proChips }}" as="p" hint-placeholder-count="4">
+        <button onClick="{{ p.pick }}" style="display:flex;align-items:center;gap:7px;white-space:nowrap;padding:7px 12px 7px 8px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid {{ p.border }};background:{{ p.bg }};color:{{ p.fg }}"><span style="width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:600;background:{{ p.avBg }};color:{{ p.avFg }}">{{ p.ini }}</span>{{ p.label }}</button>
+      </sc-for>
+    </div>
+    <div style="position:relative;margin-top:14px">
+      <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="8">
+        <div style="display:flex;gap:12px;min-height:{{ t.minH }}">
+          <div style="width:42px;flex-shrink:0;text-align:right;padding-top:{{ t.padT }}"><strong style="display:block;font-size:12px;font-weight:550;color:{{ t.timeColor }};letter-spacing:-.3px">{{ t.time }}</strong><small style="display:block;font-size:10px;color:#9599a2">{{ t.sub }}</small></div>
+          <div style="width:14px;flex-shrink:0;display:flex;flex-direction:column;align-items:center"><span style="width:2px;height:{{ t.padT }};background:#e6e7ec"></span><span style="width:{{ t.dot }};height:{{ t.dot }};border-radius:50%;background:{{ t.dotColor }};box-shadow:0 0 0 3px {{ t.dotRing }};flex-shrink:0"></span><span style="width:2px;flex:1;background:#e6e7ec"></span></div>
+          <div style="flex:1;min-width:0;padding-bottom:10px">
+            <sc-if value="{{ t.isAppt }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ t.open }}" style="width:100%;background:#fff;border:1px solid #e6e7ec;border-left:3px solid {{ t.color }};border-radius:10px;padding:11px 12px;display:flex;flex-direction:column;gap:6px;opacity:{{ t.opacity }}" style-hover="border-color:#d6cdeb">
+                <div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><strong style="font-size:13px;font-weight:550;color:#24252b">{{ t.clientName }}</strong><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 6px;border-radius:5px;font-size:10px;white-space:nowrap;font-weight:500;color:{{ t.sFg }};background:{{ t.sBg }}">{{ t.status }}</span></div>
+                <small style="font-size:11px;color:#737785">{{ t.svcName }} · {{ t.proFirst }} · até {{ t.end }}</small>
+              </button>
+            </sc-if>
+            <sc-if value="{{ t.isGap }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px dashed #d9cfee;border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fcfaff"><span style="font-size:12px;color:#835aaf">Horário livre · {{ t.gapLabel }}</span><button onClick="{{ t.fill }}" style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#7435d5"><i class="icon-plus"></i>Encaixar</button></div>
+            </sc-if>
+            <sc-if value="{{ t.isBreak }}" hint-placeholder-val="{{ false }}">
+              <div style="border-radius:10px;padding:10px 12px;font-size:12px;color:#909099;background:repeating-linear-gradient(45deg,#f1edf3,#f1edf3 5px,#faf7fc 5px,#faf7fc 10px);border:1px solid #e7dced">Intervalo · {{ t.gapLabel }}</div>
+            </sc-if>
+            <sc-if value="{{ t.isNow }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:8px;padding-top:{{ t.padT }}"><span style="font-size:11px;font-weight:600;color:#7435d5">Agora</span><span style="flex:1;height:1px;background:#7435d5"></span></div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ varC }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:22px 18px 0">
+    <h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Bom dia, Marina</h1>
+    <p style="margin:6px 0 0;font-size:13px;color:#6c707c">{{ remainingNote }}</p>
+    <sc-if value="{{ hasNext }}" hint-placeholder-val="{{ true }}">
+    <section style="margin-top:18px;background:#fff;border:1px solid #ded5ee;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px #4c246510">
+      <div style="padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between"><span style="font-size:10px;letter-spacing:1.25px;font-weight:650;color:#7435d5">PRÓXIMO ATENDIMENTO</span><span style="font-size:11px;font-weight:600;color:#7435d5;background:#f1ebfb;padding:3px 8px;border-radius:20px">{{ next.inLabel }}</span></div>
+      <button onClick="{{ next.open }}" style="display:flex;gap:14px;align-items:center;padding:14px 18px 16px;width:100%">
+        <span style="text-align:left"><strong style="display:block;font-size:30px;font-weight:600;letter-spacing:-1.2px;color:#202128;line-height:1.1;font-variant-numeric:tabular-nums">{{ next.time }}</strong><small style="font-size:11px;color:#737785">até {{ next.end }}</small></span>
+        <span style="width:1px;align-self:stretch;background:#eceef2"></span>
+        <span style="flex:1;min-width:0"><b style="display:block;font-size:16px;font-weight:600;color:#24252b;letter-spacing:-.3px">{{ next.clientName }}</b><small style="display:block;font-size:12px;color:#737785;margin-top:2px">{{ next.svcName }} · {{ next.proFirst }}</small><span style="display:inline-flex;align-items:center;gap:4px;margin-top:7px;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:500;color:{{ next.sFg }};background:{{ next.sBg }}"><span style="width:3px;height:3px;border-radius:50%;background:currentColor"></span>{{ next.status }}</span></span>
+      </button>
+      <div style="display:flex;gap:8px;padding:0 18px 18px">
+        <button onClick="{{ next.advance }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:8px;background:#7435d5;color:#fff;font-weight:600;font-size:13px" style-hover="background:#6024be"><i class="icon-check"></i>{{ next.advanceLabel }}</button>
+        <button onClick="{{ toastWhats }}" style="width:44px;height:44px;display:grid;place-items:center;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-size:18px"><i class="icon-message-circle"></i></button>
+        <button onClick="{{ toastCall }}" style="width:44px;height:44px;display:grid;place-items:center;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-size:18px"><i class="icon-phone"></i></button>
+      </div>
+    </section>
+    </sc-if>
+    <sc-for list="{{ inService }}" as="s" hint-placeholder-count="1">
+      <button onClick="{{ s.open }}" style="margin-top:12px;width:100%;background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:13px 15px;display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;justify-content:space-between;width:100%;align-items:center"><span style="font-size:12px;color:#626672"><b style="color:#bc8b3f;font-weight:600">Em atendimento</b> · {{ s.clientName }}</span><span style="font-size:11px;color:#737785">até {{ s.end }}</span></div>
+        <div style="height:5px;border-radius:5px;background:#fff3e2;width:100%;overflow:hidden"><span style="display:block;height:100%;background:#dcae68;border-radius:5px;width:{{ s.pct }}"></span></div>
+      </button>
+    </sc-for>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+      <button onClick="{{ goCrmDue }}" style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:13px 14px" style-hover="border-color:#c9b3e5"><span style="font-size:12px;color:#626672;display:flex;align-items:center;gap:6px"><i class="icon-phone" style="color:#786b8c"></i>Contatos para hoje</span><strong style="display:block;font-size:20px;font-weight:600;margin-top:6px;color:#22242b">{{ dueCount }}</strong></button>
+      <button onClick="{{ goCrm }}" style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:13px 14px" style-hover="border-color:#c9b3e5"><span style="font-size:12px;color:#626672;display:flex;align-items:center;gap:6px"><i class="icon-clock" style="color:#786b8c"></i>Em aberto</span><strong style="display:block;font-size:20px;font-weight:600;margin-top:6px;color:#22242b;font-variant-numeric:tabular-nums">{{ pendingTotal }}</strong></button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:22px 0 4px"><h2 style="margin:0;font-size:15px;font-weight:600;color:#262830">Depois</h2><button onClick="{{ goAgenda }}" style="font-size:12px;color:#7435d5;font-weight:600;display:flex;align-items:center;gap:5px">Agenda<i class="icon-arrow-right"></i></button></div>
+    <sc-for list="{{ later }}" as="a" hint-placeholder-count="4">
+      <button onClick="{{ a.open }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eceef2">
+        <strong style="width:42px;font-size:13px;font-weight:550;color:#33343e;font-variant-numeric:tabular-nums">{{ a.time }}</strong>
+        <span style="width:8px;height:8px;border-radius:3px;background:{{ a.color }}"></span>
+        <span style="flex:1;min-width:0"><b style="display:block;font-size:13px;font-weight:550;color:#24252b">{{ a.clientName }}</b><small style="font-size:11px;color:#737785">{{ a.svcName }} · {{ a.proFirst }}</small></span>
+        <i class="icon-chevron-right" style="color:#b9aec6"></i>
+      </button>
+    </sc-for>
+  </div>
+  </sc-if>
+</sc-if>
+
+<sc-if value="{{ tabAgenda }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:14px 18px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+      <div><div style="font-size:10px;color:#727582;font-weight:650;letter-spacing:1.25px;margin-bottom:6px">STUDIO AURORA</div><h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Agenda</h1></div>
+      <div style="display:flex;background:#eef0f3;border-radius:9px;padding:3px;height:36px">
+        <sc-for list="{{ viewOpts }}" as="v" hint-placeholder-count="2"><button onClick="{{ v.pick }}" style="padding:0 14px;border-radius:7px;font-size:12px;font-weight:500;color:{{ v.fg }};background:{{ v.bg }};box-shadow:{{ v.shadow }}">{{ v.label }}</button></sc-for>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px"><h2 style="margin:0;font-size:15px;font-weight:550;color:#262830">{{ periodLabel }}</h2><span style="font-size:11px;color:#737785">{{ periodCount }}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+      <sc-for list="{{ strip }}" as="d" hint-placeholder-count="7">
+        <button onClick="{{ d.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0 7px;border-radius:10px;background:{{ d.bg }};opacity:{{ d.opacity }}">
+          <span style="font-size:10px;color:{{ d.labelFg }}">{{ d.short }}</span>
+          <b style="font-size:16px;font-weight:550;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;color:{{ d.numFg }};background:{{ d.numBg }}">{{ d.num }}</b>
+          <span style="width:4px;height:4px;border-radius:50%;background:{{ d.dot }}"></span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+  <sc-if value="{{ isDayView }}" hint-placeholder-val="{{ true }}">
+    <div style="margin:12px 12px 0;background:#fff;border:1px solid #e6e7ec;border-radius:12px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:38px repeat(3,minmax(0,1fr));border-bottom:1px solid #e9ebef">
+        <span style="font-size:9px;color:#9599a2;display:grid;place-items:center">GMT-3</span>
+        <sc-for list="{{ dayCols }}" as="c" hint-placeholder-count="3"><div style="padding:10px 3px 9px;text-align:center;border-left:1px solid #eef0f3"><span style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:auto;font-size:9px;font-weight:600;background:{{ c.avBg }};color:{{ c.color }}">{{ c.ini }}</span><b style="display:block;font-size:11px;font-weight:500;color:#4f5260;margin-top:5px">{{ c.first }}</b></div></sc-for>
+      </div>
+      <sc-if value="{{ dayClosed }}" hint-placeholder-val="{{ false }}"><div style="padding:50px 20px;text-align:center;color:#737785;font-size:13px"><i class="icon-moon" style="font-size:28px;color:#c5b6d0;display:block;margin-bottom:10px"></i>Fechado aos domingos.</div></sc-if>
+      <sc-if value="{{ dayOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:38px repeat(3,minmax(0,1fr));position:relative">
+        <div style="position:relative;height:768px;font-size:9px;color:#9599a2">
+          <sc-for list="{{ hourLabels }}" as="h" hint-placeholder-count="12"><span style="position:absolute;right:6px;top:{{ h.top }}">{{ h.label }}</span></sc-for>
+        </div>
+        <sc-for list="{{ dayCols }}" as="c" hint-placeholder-count="3">
+          <div style="position:relative;height:768px;border-left:1px solid #eef0f3">
+            <sc-for list="{{ c.cells }}" as="cell" hint-placeholder-count="12"><button onClick="{{ cell.tap }}" aria-label="Agendar" style="display:block;width:100%;height:64px;border-bottom:1px solid #f1f2f5;background:{{ cell.bg }}" style-hover="background:#f7f0ff"></button></sc-for>
+            <sc-for list="{{ c.events }}" as="e" hint-placeholder-count="2">
+              <button onClick="{{ e.open }}" style="position:absolute;left:3px;right:3px;top:{{ e.top }};height:{{ e.height }};text-align:left;border-left:3px solid {{ e.color }};border-radius:5px;display:flex;flex-direction:column;gap:1px;overflow:hidden;padding:5px 5px;z-index:2;background:{{ e.bg }};color:{{ e.color }};opacity:{{ e.opacity }}">
+                <strong style="font-size:10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ e.clientShort }}</strong>
+                <span style="font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ e.svcName }}</span>
+                <small style="font-size:9px;opacity:.75">{{ e.time }}</small>
+              </button>
+            </sc-for>
+          </div>
+        </sc-for>
+        <sc-if value="{{ showNow }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:34px;right:0;top:{{ nowTop }};height:2px;background:#7435d5;z-index:4;pointer-events:none"><span style="position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#7435d5"></span></div></sc-if>
+      </div>
+      </sc-if>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isWeekView }}" hint-placeholder-val="{{ false }}">
+    <div style="margin:12px 12px 0;background:#fff;border:1px solid #e6e7ec;border-radius:12px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:30px repeat(7,minmax(0,1fr));position:relative">
+        <div style="position:relative;height:528px;font-size:9px;color:#9599a2"><sc-for list="{{ weekHours }}" as="h" hint-placeholder-count="12"><span style="position:absolute;right:4px;top:{{ h.top }}">{{ h.label }}</span></sc-for></div>
+        <sc-for list="{{ weekCols }}" as="w" hint-placeholder-count="7">
+          <button onClick="{{ w.pick }}" style="position:relative;height:528px;border-left:1px solid #eef0f3;background:{{ w.bg }}">
+            <sc-for list="{{ w.events }}" as="e" hint-placeholder-count="3"><span style="position:absolute;top:{{ e.top }};height:{{ e.height }};left:{{ e.left }};width:30%;border-radius:3px;background:{{ e.color }};opacity:{{ e.opacity }}"></span></sc-for>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <p style="margin:10px 18px 0;font-size:11px;color:#737785">Toque em um dia para ver os atendimentos.</p>
+  </sc-if>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 16px;padding:14px 18px 0">
+    <sc-for list="{{ legend }}" as="l" hint-placeholder-count="5"><span style="display:flex;align-items:center;gap:6px;font-size:11px;color:#626672"><i style="width:7px;height:7px;border-radius:3px;background:{{ l.color }};display:block"></i>{{ l.name }}</span></sc-for>
+  </div>
+</sc-if>
+
+<sc-if value="{{ tabCrm }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:14px 18px 0">
+    <div style="font-size:10px;color:#727582;font-weight:650;letter-spacing:1.25px;margin-bottom:6px">RELACIONAMENTOS</div>
+    <h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Clientes e CRM</h1>
+    <p style="margin:6px 0 0;font-size:13px;color:#6c707c">Relacionamentos, atendimentos e recebimentos em um só lugar.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 14px">
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:13px 14px"><span style="font-size:12px;color:#626672">Contatos para hoje</span><strong style="display:block;font-size:20px;font-weight:600;margin-top:4px;color:#22242b">{{ dueCount }}</strong><small style="font-size:10px;color:#727582">Inclui retornos em atraso</small></div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:13px 14px"><span style="font-size:12px;color:#626672">Em aberto</span><strong style="display:block;font-size:20px;font-weight:600;margin-top:4px;color:#22242b;font-variant-numeric:tabular-nums">{{ pendingTotal }}</strong><small style="font-size:10px;color:#b6683e">{{ overdueTotal }} em atraso</small></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:9px;border:1px solid #e1e3e8;background:#fff;border-radius:8px;padding:0 12px;color:#8a8e98;height:42px"><i class="icon-search" style="font-size:17px"></i><input value="{{ crmQ }}" onChange="{{ onCrmQ }}" placeholder="Buscar nome, empresa ou telefone..." style="flex:1;border:0;background:transparent;font-size:14px;color:#24252b;min-width:0;box-shadow:none"></div>
+  </div>
+  <div style="display:flex;gap:18px;padding:0 18px;margin-top:10px;border-bottom:1px solid #e8e9ed;overflow-x:auto">
+    <sc-for list="{{ stageTabs }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.pick }}" style="display:flex;align-items:center;gap:7px;white-space:nowrap;font-size:12px;padding:12px 0 13px;border-bottom:2px solid {{ s.line }};color:{{ s.fg }};font-weight:{{ s.weight }}">{{ s.label }}<span style="border-radius:5px;min-width:20px;padding:1px 5px;text-align:center;font-size:10px;background:{{ s.cBg }};color:{{ s.cFg }}">{{ s.count }}</span></button></sc-for>
+  </div>
+  <div style="padding:0 18px">
+    <sc-for list="{{ crmRows }}" as="r" hint-placeholder-count="5">
+      <button onClick="{{ r.open }}" style="width:100%;display:flex;flex-direction:column;gap:12px;padding:18px 0;border-bottom:1px solid #eceef2">
+        <div style="display:flex;align-items:center;gap:11px;width:100%"><span style="width:36px;height:36px;border-radius:10px;background:#f0edf6;color:#847397;display:grid;place-items:center;font-size:11px;font-weight:600;flex-shrink:0">{{ r.ini }}</span><span style="flex:1;min-width:0"><b style="display:block;font-size:14px;color:#33343e;font-weight:550">{{ r.name }}</b><small style="display:block;font-size:12px;color:#8a8e98">{{ r.sub }}</small></span><i class="icon-arrow-up-right" style="font-size:18px;color:#9599a2"></i></div>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:500;border:1px solid {{ r.stBorder }};border-radius:5px;padding:4px 7px;color:{{ r.stFg }};background:{{ r.stBg }}"><span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>{{ r.stage }}</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%">
+          <span style="font-size:11px;color:#737785">Próximo contato<b style="display:block;font-size:13px;font-weight:550;margin-top:2px;color:{{ r.nextFg }}">{{ r.next }}</b></span>
+          <span style="font-size:11px;color:#737785">Em aberto<b style="display:block;font-size:13px;font-weight:550;margin-top:2px;color:#343741;font-variant-numeric:tabular-nums">{{ r.pending }}</b><sc-if value="{{ r.hasOverdue }}" hint-placeholder-val="{{ false }}"><small style="display:block;font-size:10px;color:#b6683e">Há valores em atraso</small></sc-if></span>
+        </div>
+      </button>
+    </sc-for>
+    <sc-if value="{{ crmEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:40px 10px;text-align:center;color:#737785"><i class="icon-inbox" style="font-size:30px;color:#c5b6d0"></i><b style="display:block;font-size:14px;font-weight:550;color:#4f5260;margin-top:8px">Nenhum cliente nesta seleção</b><p style="margin:4px 0 0;font-size:12px">Ajuste os filtros para encontrar um contato.</p></div></sc-if>
+  </div>
+</sc-if>
+
+<sc-if value="{{ tabAvisos }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:14px 18px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between"><div><div style="font-size:10px;color:#727582;font-weight:650;letter-spacing:1.25px;margin-bottom:6px">NOTIFICAÇÕES</div><h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Avisos</h1></div><button onClick="{{ markAllRead }}" style="font-size:12px;color:#7435d5;font-weight:600;padding-bottom:4px">Marcar todas como lidas</button></div>
+    <div style="margin-top:10px">
+      <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="4">
+        <button onClick="{{ n.open }}" style="width:100%;display:flex;gap:12px;align-items:flex-start;padding:18px 0;border-bottom:1px solid #eceef2">
+          <span style="padding:9px;border-radius:8px;font-size:17px;display:grid;place-items:center;background:{{ n.iconBg }};color:{{ n.iconFg }}"><i class="{{ n.icon }}"></i></span>
+          <span style="flex:1;min-width:0"><b style="display:block;font-size:14px;margin-bottom:2px;color:{{ n.titleFg }};font-weight:600">{{ n.title }}</b><p style="margin:0;font-size:13px;color:#626672;line-height:1.5">{{ n.text }}</p><small style="display:block;font-size:11px;color:#9599a2;margin-top:4px">{{ n.time }}</small></span>
+          <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><i style="width:6px;height:6px;background:#7c3aed;border-radius:50%;margin-top:8px;display:block"></i></sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ tabFin }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:14px 18px 0">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div><div style="font-size:10px;color:#727582;font-weight:650;letter-spacing:1.25px;margin-bottom:6px">STUDIO AURORA</div><h1 style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-1px;font-weight:600;color:#202128">Financeiro</h1></div>
+      <button onClick="{{ newTx }}" aria-label="Nova movimentação" style="width:40px;height:40px;border-radius:10px;background:#7435d5;color:#fff;display:grid;place-items:center;font-size:20px;margin-top:6px" style-hover="background:#6024be"><i class="icon-plus"></i></button>
+    </div>
+    <p style="margin:6px 0 0;font-size:13px;color:#6c707c">Uma visão clara das entradas e saídas do seu negócio.</p>
+    <div style="display:flex;background:#eef0f3;border-radius:9px;padding:3px;margin-top:14px">
+      <sc-for list="{{ periodOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.pick }}" style="flex:1;text-align:center;padding:8px 0;border-radius:7px;font-size:12px;font-weight:500;color:{{ o.fg }};background:{{ o.bg }};box-shadow:{{ o.shadow }}">{{ o.label }}</button></sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:14px 0 16px">
+      <div style="background:#fff;border:1px solid #ded5ee;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Faturamento<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f1ebfb;color:#7143b3;font-size:15px"><i class="icon-wallet"></i></span></div>
+        <strong style="display:block;font-size:20px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#7c3aed;font-variant-numeric:tabular-nums;white-space:nowrap">{{ fRev }}</strong>
+        <div style="font-size:11px;color:#727582;line-height:1.5">Receitas pagas</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Custos + despesas<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f5f4f8;color:#786b8c;font-size:15px"><i class="icon-receipt"></i></span></div>
+        <strong style="display:block;font-size:20px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#22242b;font-variant-numeric:tabular-nums;white-space:nowrap">{{ fCostExp }}</strong>
+        <div style="font-size:11px;color:#727582;line-height:1.5">{{ fCostNote }}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">Lucro estimado<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f5f4f8;color:#786b8c;font-size:15px"><i class="icon-trending-up"></i></span></div>
+        <strong style="display:block;font-size:20px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#22242b;font-variant-numeric:tabular-nums;white-space:nowrap">{{ fProfit }}</strong>
+        <button onClick="{{ profitTip }}" style="font-size:11px;color:#7435d5;line-height:1.5">Entenda a estimativa</button>
+      </div>
+      <div style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;padding:15px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#626672;font-weight:500">A receber<span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#f5f4f8;color:#786b8c;font-size:15px"><i class="icon-clock"></i></span></div>
+        <strong style="display:block;font-size:20px;font-weight:600;letter-spacing:-.9px;margin:12px 0 6px;color:#22242b;font-variant-numeric:tabular-nums;white-space:nowrap">{{ fRecv }}</strong>
+        <div style="font-size:11px;color:#727582;line-height:1.5">{{ fForeNote }}</div>
+      </div>
+    </div>
+    <section style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 18px 4px"><div><h2 style="margin:0;font-size:15px;font-weight:600;color:#262830">Faturamento por período</h2><p style="margin:4px 0 0;font-size:12px;color:#737785">{{ chartTitle }}</p></div><span style="font-size:10px;color:#737785;display:flex;align-items:center;gap:6px"><i style="width:6px;height:6px;background:#9371d0;border-radius:50%;display:block"></i>Receita</span></div>
+      <div style="display:flex;align-items:flex-end;gap:8px;height:160px;padding:12px 18px 0">
+        <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="7">
+          <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;min-width:0">
+            <span style="font-size:9px;color:#8a8e98;white-space:nowrap">{{ b.val }}</span>
+            <div style="width:100%;max-width:30px;flex:1;display:flex;align-items:flex-end;background:#f4edfa;border-radius:5px;overflow:hidden"><span style="display:block;width:100%;height:{{ b.h }};background:{{ b.bg }};border-radius:5px"></span></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:8px;padding:7px 18px 16px"><sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="7"><span style="flex:1;text-align:center;font-size:10px;color:{{ b.labelFg }}">{{ b.label }}</span></sc-for></div>
+    </section>
+    <section style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;margin-top:14px;padding:18px 18px 4px">
+      <h2 style="margin:0 0 14px;font-size:15px;font-weight:600;color:#262830">Formas de pagamento</h2>
+      <sc-for list="{{ payList }}" as="p" hint-placeholder-count="4">
+        <div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:13px;color:#626672"><span>{{ p.name }}</span><b style="font-weight:500;color:#33343e;font-variant-numeric:tabular-nums">{{ p.value }}</b></div><div style="height:7px;border-radius:5px;background:#f4edfa;margin-top:8px"><span style="display:block;height:100%;border-radius:5px;background:#b095d8;width:{{ p.w }}"></span></div></div>
+      </sc-for>
+      <sc-if value="{{ payEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 16px;font-size:12px;color:#737785">Sem receitas no período.</p></sc-if>
+    </section>
+    <section style="background:#fff;border:1px solid #e6e7ec;border-radius:12px;margin-top:14px;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 18px 0"><div><h2 style="margin:0;font-size:15px;font-weight:600;color:#262830">Movimentações</h2><p style="margin:4px 0 0;font-size:11px;color:#737785">{{ txCount }}</p></div><button onClick="{{ newTx }}" style="display:flex;align-items:center;gap:6px;padding:7px 10px;min-height:34px;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-size:12px;font-weight:600" style-hover="background:#f7f5ff"><i class="icon-plus"></i>Registrar despesa</button></div>
+      <div style="display:flex;gap:7px;padding:12px 18px 4px"><sc-for list="{{ txFilterOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.pick }}" style="padding:6px 11px;font-size:12px;border-radius:6px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for></div>
+      <div style="padding:0 18px">
+        <sc-for list="{{ txRows }}" as="r" hint-placeholder-count="6">
+          <button onClick="{{ r.open }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid #f1eaf7">
+            <span style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:16px;flex-shrink:0;background:{{ r.iconBg }};color:{{ r.iconFg }}"><i class="{{ r.icon }}"></i></span>
+            <span style="flex:1;min-width:0"><b style="display:block;font-size:13px;font-weight:550;color:#33343e">{{ r.desc }}</b><small style="display:block;font-size:11px;color:#8a8e98;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</small></span>
+            <span style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0"><strong style="font-size:13px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;color:{{ r.amountFg }}">{{ r.amountLabel }}</strong>
+              <span style="display:flex;gap:4px"><sc-if value="{{ r.isAgenda }}" hint-placeholder-val="{{ false }}"><span style="font-size:9px;background:#f5eefc;color:#835aaf;padding:3px 6px;border-radius:5px">Agenda</span></sc-if><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 6px;border-radius:5px;font-size:10px;font-weight:500;color:{{ r.sFg }};background:{{ r.sBg }}">{{ r.status }}</span></span>
+            </span>
+          </button>
+        </sc-for>
+        <sc-if value="{{ txEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:34px 10px;text-align:center;color:#737785;font-size:12px"><i class="icon-inbox" style="font-size:28px;color:#c5b6d0"></i><b style="display:block;font-size:14px;font-weight:550;color:#4f5260;margin:8px 0 4px">Nenhuma movimentação encontrada</b>Ajuste o período ou registre uma movimentação.</div></sc-if>
+      </div>
+      <p style="margin:0;padding:14px 18px 16px;font-size:11px;color:#858994;line-height:1.7">Atendimentos concluídos e pagos geram uma única receita. O financeiro mostra estimativas, sem substituir a contabilidade.</p>
+    </section>
+  </div>
+</sc-if>
+</div>
+
+<nav style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;align-items:center;padding:8px 8px 30px;background:#fffffffa;backdrop-filter:blur(15px);border-top:1px solid #e8e9ed;z-index:20">
+  <sc-for list="{{ tabsL }}" as="t" hint-placeholder-count="2"><button onClick="{{ t.go }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px;font-size:10px;border-radius:8px;padding:5px 7px;color:{{ t.fg }};background:{{ t.bg }}"><i class="{{ t.icon }}" style="font-size:20px"></i>{{ t.label }}</button></sc-for>
+  <button onClick="{{ openNew }}" aria-label="Novo agendamento" style="width:48px;height:48px;border-radius:14px;background:#7435d5;color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 6px 16px #7435d533" style-hover="background:#6024be"><i class="icon-plus"></i></button>
+  <sc-for list="{{ tabsR }}" as="t" hint-placeholder-count="2"><button onClick="{{ t.go }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px;font-size:10px;border-radius:8px;padding:5px 7px;color:{{ t.fg }};background:{{ t.bg }}"><i class="{{ t.icon }}" style="font-size:20px"></i>{{ t.label }}<sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:0;right:12px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#7c3aed;color:#fff;font-size:10px;font-weight:700;line-height:16px;text-align:center;border:2px solid #fff">{{ t.badge }}</span></sc-if></button></sc-for>
+</nav>
+
+<sc-if value="{{ hasClient }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#f7f8fa;z-index:30;overflow-y:auto;padding:54px 0 40px">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 10px"><button onClick="{{ closeClient }}" style="display:flex;align-items:center;gap:4px;font-size:14px;color:#7435d5;font-weight:500;padding:8px"><i class="icon-chevron-left" style="font-size:20px"></i>CRM</button><button onClick="{{ toastEdit }}" style="display:flex;align-items:center;gap:6px;font-size:13px;color:#4f5260;padding:8px"><i class="icon-pencil"></i>Editar</button></div>
+  <div style="padding:6px 18px 0;display:flex;flex-direction:column;align-items:center;text-align:center">
+    <span style="width:70px;height:70px;border-radius:18px;background:#f0edf6;color:#847397;display:grid;place-items:center;font-size:22px;font-weight:550">{{ cl.ini }}</span>
+    <h2 style="margin:12px 0 2px;font-size:23px;font-weight:600;letter-spacing:-.6px;color:#202128">{{ cl.name }}</h2>
+    <span style="font-size:13px;color:#737785">{{ cl.sub }}</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:18px 18px 0">
+    <button onClick="{{ toastCall }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 0;background:#fff;border:1px solid #e6e7ec;border-radius:10px;font-size:11px;color:#4f5260"><i class="icon-phone" style="font-size:18px;color:#7435d5"></i>Ligar</button>
+    <button onClick="{{ toastWhats }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 0;background:#fff;border:1px solid #e6e7ec;border-radius:10px;font-size:11px;color:#4f5260"><i class="icon-message-circle" style="font-size:18px;color:#7435d5"></i>WhatsApp</button>
+    <button onClick="{{ cl.book }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 0;background:#fff;border:1px solid #e6e7ec;border-radius:10px;font-size:11px;color:#4f5260"><i class="icon-calendar-plus" style="font-size:18px;color:#7435d5"></i>Agendar</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #e8eaf0;border-radius:10px;background:#fff;margin:14px 18px 0">
+    <div style="padding:14px 16px"><span style="display:block;font-size:11px;color:#737785">Recebido</span><b style="display:block;font-size:17px;font-weight:600;color:#399470;margin-top:4px;font-variant-numeric:tabular-nums">{{ cl.received }}</b></div>
+    <div style="padding:14px 16px;border-left:1px solid #e8eaf0"><span style="display:block;font-size:11px;color:#737785">Em aberto</span><b style="display:block;font-size:17px;font-weight:600;color:#343741;margin-top:4px;font-variant-numeric:tabular-nums">{{ cl.pending }}</b></div>
+  </div>
+  <div style="margin:14px 18px 0;padding:14px 16px;background:#f8f9fb;border:1px solid #e8eaf0;border-radius:10px">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:#626672"><span>Etapa do relacionamento</span><span>Próximo contato: <b style="font-weight:550;color:{{ cl.nextFg }}">{{ cl.next }}</b></span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><sc-for list="{{ cl.stages }}" as="s" hint-placeholder-count="5"><button onClick="{{ s.pick }}" style="font-size:11px;font-weight:500;border:1px solid {{ s.border }};border-radius:6px;padding:5px 8px;color:{{ s.fg }};background:{{ s.bg }}">{{ s.label }}</button></sc-for></div>
+  </div>
+  <div style="display:flex;gap:22px;padding:0 18px;margin-top:18px;border-bottom:1px solid #e8e9ed">
+    <sc-for list="{{ clTabs }}" as="t" hint-placeholder-count="2"><button onClick="{{ t.pick }}" style="font-size:13px;padding:10px 0 12px;border-bottom:2px solid {{ t.line }};color:{{ t.fg }};font-weight:{{ t.weight }}">{{ t.label }}</button></sc-for>
+  </div>
+  <div style="padding:0 18px">
+    <sc-if value="{{ clTabInter }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px"><sc-for list="{{ kindChips }}" as="k" hint-placeholder-count="5"><button onClick="{{ k.pick }}" style="font-size:11px;padding:5px 9px;border-radius:6px;border:1px solid {{ k.border }};background:{{ k.bg }};color:{{ k.fg }}">{{ k.label }}</button></sc-for></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><input value="{{ noteText }}" onChange="{{ onNote }}" placeholder="O que foi conversado?" style="flex:1;min-width:0;border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:14px;background:#fff"><button onClick="{{ addNote }}" style="padding:0 14px;border-radius:8px;background:#7435d5;color:#fff;font-weight:600;font-size:13px">Registrar</button></div>
+      <small style="display:block;font-size:11px;color:#9599a2;margin-top:6px">Registro interno. Nenhuma mensagem será enviada.</small>
+      <div style="margin-top:8px">
+        <sc-for list="{{ cl.inter }}" as="i" hint-placeholder-count="2">
+          <article style="display:flex;gap:11px;padding:14px 0;border-bottom:1px solid #eceef2"><span style="width:30px;height:30px;border-radius:8px;background:#f3effb;color:#835aaf;display:grid;place-items:center;font-size:15px;flex-shrink:0"><i class="icon-message-square"></i></span><div style="flex:1"><header style="display:flex;justify-content:space-between"><b style="font-size:13px;font-weight:550;color:#33343e">{{ i.kind }}</b><time style="font-size:11px;color:#9599a2">{{ i.date }}</time></header><p style="margin:3px 0 0;font-size:13px;color:#626672;line-height:1.55">{{ i.text }}</p></div></article>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ clTabPay }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ cl.pays }}" as="p" hint-placeholder-count="2">
+        <article style="display:flex;gap:10px;justify-content:space-between;padding:16px 0;border-bottom:1px solid #eceef2">
+          <div style="min-width:0"><b style="display:block;font-size:13px;font-weight:550;color:#33343e">{{ p.desc }}</b><small style="display:block;font-size:11px;color:#8a8e98;margin-top:2px">{{ p.kind }} · {{ p.date }}</small><sc-if value="{{ p.hasDue }}" hint-placeholder-val="{{ false }}"><small style="display:block;font-size:11px;margin-top:2px;color:{{ p.dueFg }}">Vencimento: {{ p.due }}</small></sc-if></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"><strong style="font-size:14px;font-weight:600;color:#343741;font-variant-numeric:tabular-nums">{{ p.amount }}</strong><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 6px;border-radius:5px;font-size:10px;font-weight:500;color:{{ p.sFg }};background:{{ p.sBg }}"><span style="width:3px;height:3px;border-radius:50%;background:currentColor"></span>{{ p.status }}</span><button onClick="{{ p.edit }}" style="font-size:12px;color:#7435d5;font-weight:600">Alterar pagamento</button></div>
+        </article>
+      </sc-for>
+      <sc-if value="{{ cl.noPays }}" hint-placeholder-val="{{ false }}"><div style="padding:36px 10px;text-align:center;color:#737785;font-size:12px"><i class="icon-inbox" style="font-size:28px;color:#c5b6d0"></i><b style="display:block;font-size:14px;font-weight:550;color:#4f5260;margin:8px 0 4px">Nenhum recebimento vinculado</b>Crie um lançamento ou agende um atendimento para este cliente.</div></sc-if>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasDetail }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:35;display:flex;flex-direction:column;justify-content:flex-end">
+  <button onClick="{{ closeDetail }}" aria-label="Fechar" style="position:absolute;inset:0;background:#18181b52"></button>
+  <div style="position:relative;background:#fff;border-radius:20px 20px 0 0;padding:10px 20px 40px;max-height:88%;overflow:auto">
+    <span style="display:block;width:38px;height:5px;border-radius:5px;background:#e1e3e8;margin:0 auto 14px"></span>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 7px;border-radius:5px;font-size:10px;font-weight:500;color:{{ dt.sFg }};background:{{ dt.sBg }}"><span style="width:3px;height:3px;border-radius:50%;background:currentColor"></span>{{ dt.status }}</span><h2 style="margin:8px 0 2px;font-size:21px;font-weight:600;letter-spacing:-.6px;color:#202128">{{ dt.clientName }}</h2><span style="font-size:13px;color:#737785">{{ dt.svcName }}</span></div><button onClick="{{ closeDetail }}" style="padding:6px;color:#9f90ae;font-size:20px;border-radius:6px" style-hover="background:#f3ecfb;color:#7c3aed"><i class="icon-x"></i></button></div>
+    <div style="border-top:1px solid #eceef2;border-bottom:1px solid #eceef2;padding:12px 0;margin-top:16px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#737785"><i class="icon-calendar-days" style="color:#8b819b"></i>Data<b style="margin-left:auto;font-weight:500;color:#33343e">{{ dt.dayLabel }}</b></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#737785"><i class="icon-clock" style="color:#8b819b"></i>Horário<b style="margin-left:auto;font-weight:500;color:#33343e">{{ dt.time }} – {{ dt.end }}</b></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#737785"><i class="icon-user" style="color:#8b819b"></i>Profissional<b style="margin-left:auto;font-weight:500;color:#33343e">{{ dt.proName }}</b></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#737785"><i class="icon-phone" style="color:#8b819b"></i>Telefone<b style="margin-left:auto;font-weight:500;color:#33343e">{{ dt.phone }}</b></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:15px;background:#f8f9fb;border:1px solid #e8eaf0;border-radius:9px;margin-top:16px"><span style="flex:1;display:flex;align-items:center;gap:10px;font-size:13px;color:#626672"><i class="icon-wallet" style="color:#8b819b"></i>{{ dt.price }}</span><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 7px;border-radius:5px;font-size:10px;font-weight:500;color:{{ dt.pFg }};background:{{ dt.pBg }}">{{ dt.payStatus }}</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px">
+      <sc-if value="{{ dt.canAdvance }}" hint-placeholder-val="{{ true }}"><button onClick="{{ dt.advance }}" style="display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border-radius:9px;background:#7435d5;color:#fff;font-size:14px;font-weight:600" style-hover="background:#6024be"><i class="icon-check"></i>{{ dt.advanceLabel }}</button></sc-if>
+      <div style="display:flex;gap:10px"><button onClick="{{ dt.openClient }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-weight:600;font-size:13px"><i class="icon-user"></i>Ver cliente</button><button onClick="{{ toastWhats }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-weight:600;font-size:13px"><i class="icon-message-circle"></i>WhatsApp</button></div>
+      <sc-if value="{{ dt.canCancel }}" hint-placeholder-val="{{ false }}"><button onClick="{{ dt.cancel }}" style="text-align:center;font-size:13px;color:#ca6464;font-weight:600;padding:8px">Cancelar agendamento</button></sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasPay }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:45;display:flex;flex-direction:column;justify-content:flex-end">
+  <button onClick="{{ closePay }}" aria-label="Fechar" style="position:absolute;inset:0;background:#18181b52"></button>
+  <div style="position:relative;background:#fff;border-radius:20px 20px 0 0;padding:10px 20px 40px">
+    <span style="display:block;width:38px;height:5px;border-radius:5px;background:#e1e3e8;margin:0 auto 14px"></span>
+    <strong style="font-size:18px;font-weight:600;color:#202128;letter-spacing:-.4px">Alterar status do pagamento</strong>
+    <p style="margin:6px 0 0;font-size:13px;color:#737785;line-height:1.6">{{ pay.desc }} · {{ pay.amount }}. A mesma movimentação será atualizada no financeiro, sem criar outro lançamento.</p>
+    <div style="font-size:13px;font-weight:500;color:#4f5260;margin:18px 0 8px">Status do pagamento</div>
+    <div style="display:flex;background:#eef0f3;border-radius:9px;padding:3px"><sc-for list="{{ payStatusOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.pick }}" style="flex:1;text-align:center;padding:9px 0;border-radius:7px;font-size:13px;font-weight:500;color:{{ o.fg }};background:{{ o.bg }};box-shadow:{{ o.shadow }}">{{ o.label }}</button></sc-for></div>
+    <div style="font-size:13px;font-weight:500;color:#4f5260;margin:16px 0 8px">Forma de pagamento recebida</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px"><sc-for list="{{ methodOpts }}" as="o" hint-placeholder-count="6"><button onClick="{{ o.pick }}" style="padding:8px 11px;font-size:12px;border-radius:6px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for></div>
+    <div style="display:flex;gap:10px;margin-top:22px"><button onClick="{{ closePay }}" style="flex:1;min-height:46px;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-weight:600;text-align:center">Cancelar</button><button onClick="{{ savePay }}" style="flex:1;min-height:46px;border-radius:8px;background:#7435d5;color:#fff;font-weight:600;text-align:center" style-hover="background:#6024be">Salvar status</button></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasTxs }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:45;display:flex;flex-direction:column;justify-content:flex-end">
+  <button onClick="{{ closeTxs }}" aria-label="Fechar" style="position:absolute;inset:0;background:#18181b52"></button>
+  <div style="position:relative;background:#fff;border-radius:20px 20px 0 0;padding:10px 20px 38px;max-height:90%;overflow:auto">
+    <span style="display:block;width:38px;height:5px;border-radius:5px;background:#e1e3e8;margin:0 auto 14px"></span>
+    <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:18px;font-weight:600;color:#202128;letter-spacing:-.4px">{{ txsTitle }}</strong><button onClick="{{ closeTxs }}" style="padding:6px;color:#9f90ae;font-size:20px;border-radius:6px"><i class="icon-x"></i></button></div>
+    <div style="display:flex;background:#eef0f3;border-radius:9px;padding:3px;margin-top:14px"><sc-for list="{{ txTypeOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.pick }}" style="flex:1;text-align:center;padding:9px 0;border-radius:7px;font-size:13px;font-weight:500;color:{{ o.fg }};background:{{ o.bg }};box-shadow:{{ o.shadow }}">{{ o.label }}</button></sc-for></div>
+    <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500;color:#4f5260;margin-top:16px">Descrição<input value="{{ txs.desc }}" onChange="{{ onTxDesc }}" placeholder="Ex.: Compra de produtos" style="border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:16px"></label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+      <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500;color:#4f5260">Valor (R$)<input value="{{ txs.amount }}" onChange="{{ onTxAmount }}" inputMode="decimal" placeholder="0,00" style="border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:16px;font-variant-numeric:tabular-nums"></label>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500;color:#4f5260">Data<span style="border:1px solid #e3e3eb;border-radius:8px;padding:10px 12px;font-size:16px;font-weight:400;color:#24252b;background:#f8f9fb">27/10/2026</span></div>
+    </div>
+    <div style="font-size:13px;font-weight:500;color:#4f5260;margin:16px 0 8px">Forma de pagamento</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px"><sc-for list="{{ txMethodOpts }}" as="o" hint-placeholder-count="6"><button onClick="{{ o.pick }}" style="padding:8px 11px;font-size:12px;border-radius:6px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for></div>
+    <div style="font-size:13px;font-weight:500;color:#4f5260;margin:16px 0 8px">Status</div>
+    <div style="display:flex;background:#eef0f3;border-radius:9px;padding:3px"><sc-for list="{{ txStatusOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.pick }}" style="flex:1;text-align:center;padding:9px 0;border-radius:7px;font-size:13px;font-weight:500;color:{{ o.fg }};background:{{ o.bg }};box-shadow:{{ o.shadow }}">{{ o.label }}</button></sc-for></div>
+    <div style="display:flex;gap:10px;margin-top:22px;align-items:center">
+      <sc-if value="{{ txsIsEdit }}" hint-placeholder-val="{{ false }}"><button onClick="{{ deleteTx }}" style="font-size:13px;color:#ca6464;font-weight:600;padding:0 6px">Excluir</button></sc-if>
+      <button onClick="{{ closeTxs }}" style="flex:1;min-height:46px;border-radius:8px;border:1px solid #dedfe6;color:#4f5260;font-weight:600;text-align:center">Cancelar</button>
+      <button onClick="{{ saveTx }}" style="flex:1;min-height:46px;border-radius:8px;background:#7435d5;color:#fff;font-weight:600;text-align:center" style-hover="background:#6024be">Salvar</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ newOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:40;background:#18181b52;display:flex;flex-direction:column;justify-content:flex-end">
+  <div style="background:#fff;border-radius:20px 20px 0 0;height:calc(100% - 50px);display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid #eceef2"><button onClick="{{ closeNew }}" style="font-size:14px;color:#626674;padding:4px">Cancelar</button><b style="font-size:16px;font-weight:600;color:#202128">Novo agendamento</b><span style="width:58px"></span></div>
+    <div style="flex:1;overflow-y:auto;padding:16px 18px 20px;display:flex;flex-direction:column;gap:20px">
+      <div><div style="font-size:13px;font-weight:500;color:#4f5260;margin-bottom:8px">Cliente</div>
+        <sc-if value="{{ nwHasClient }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #ded5ee;background:#fcfaff;border-radius:9px"><span style="width:32px;height:32px;border-radius:9px;background:#f0edf6;color:#847397;display:grid;place-items:center;font-size:10px;font-weight:600">{{ nwClient.ini }}</span><span style="flex:1"><b style="display:block;font-size:14px;font-weight:550;color:#24252b">{{ nwClient.name }}</b><small style="font-size:11px;color:#737785">{{ nwClient.phone }}</small></span><button onClick="{{ clearNwClient }}" style="font-size:12px;color:#7435d5;font-weight:600">Trocar</button></div></sc-if>
+        <sc-if value="{{ nwNoClient }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:9px;border:1px solid #e1e3e8;border-radius:8px;padding:0 12px;color:#8a8e98;height:42px"><i class="icon-search"></i><input value="{{ nwQ }}" onChange="{{ onNwQ }}" placeholder="Buscar cliente..." style="flex:1;border:0;background:transparent;font-size:14px;min-width:0;box-shadow:none"></div>
+          <div style="margin-top:4px"><sc-for list="{{ nwClients }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.pick }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid #f1f2f5"><span style="width:30px;height:30px;border-radius:9px;background:#f0edf6;color:#847397;display:grid;place-items:center;font-size:10px;font-weight:600">{{ c.ini }}</span><span style="flex:1"><b style="display:block;font-size:13px;font-weight:500;color:#24252b">{{ c.name }}</b><small style="font-size:11px;color:#8a8e98">{{ c.phone }}</small></span></button></sc-for></div>
+        </sc-if>
+      </div>
+      <div><div style="font-size:13px;font-weight:500;color:#4f5260;margin-bottom:8px">Serviço</div>
+        <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ nwServices }}" as="s" hint-placeholder-count="5"><button onClick="{{ s.pick }}" style="display:flex;align-items:center;gap:11px;border:1px solid {{ s.border }};border-radius:10px;padding:11px 12px;background:{{ s.bg }}"><span style="width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:15px;background:{{ s.tint }};color:{{ s.color }}"><i class="icon-scissors"></i></span><span style="flex:1"><b style="display:block;font-size:13px;font-weight:550;color:#24252b">{{ s.name }}</b><small style="font-size:11px;color:#737785">{{ s.meta }}</small></span><sc-if value="{{ s.selected }}" hint-placeholder-val="{{ false }}"><i class="icon-circle-check" style="color:#7435d5;font-size:18px"></i></sc-if></button></sc-for></div>
+      </div>
+      <div><div style="font-size:13px;font-weight:500;color:#4f5260;margin-bottom:8px">Profissional</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ nwPros }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.pick }}" style="display:flex;align-items:center;gap:7px;padding:6px 12px 6px 6px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid {{ p.border }};background:{{ p.bg }};color:{{ p.fg }}"><span style="width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:600;background:{{ p.avBg }};color:{{ p.color }}">{{ p.ini }}</span>{{ p.first }}</button></sc-for></div>
+      </div>
+      <div><div style="font-size:13px;font-weight:500;color:#4f5260;margin-bottom:8px">Data</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px"><sc-for list="{{ nwDays }}" as="d" hint-placeholder-count="7"><button onClick="{{ d.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border-radius:9px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.fg }};opacity:{{ d.opacity }}"><span style="font-size:10px">{{ d.short }}</span><b style="font-size:15px;font-weight:550">{{ d.num }}</b></button></sc-for></div>
+      </div>
+      <div><div style="font-size:13px;font-weight:500;color:#4f5260;margin-bottom:8px">Horário disponível</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;min-height:46px;padding:12px;background:#faf8fd;border-radius:8px;border:1px solid #f0e8f7">
+          <sc-for list="{{ nwSlots }}" as="s" hint-placeholder-count="8"><button onClick="{{ s.pick }}" style="border:1px solid {{ s.border }};background:{{ s.bg }};padding:9px 12px;font-size:13px;color:{{ s.fg }};border-radius:6px;font-variant-numeric:tabular-nums">{{ s.label }}</button></sc-for>
+          <sc-if value="{{ nwSlotsHint }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:#92819c;line-height:1.7">{{ nwSlotsHint }}</span></sc-if>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 18px 34px;border-top:1px solid #eceef2;display:flex;align-items:center;gap:12px">
+      <div style="flex:1"><span style="display:block;font-size:11px;color:#737785">Total</span><strong style="font-size:18px;font-weight:600;color:#7c3aed;font-variant-numeric:tabular-nums">{{ nwTotal }}</strong></div>
+      <button onClick="{{ saveNew }}" style="min-height:48px;padding:0 22px;border-radius:9px;color:#fff;font-weight:600;font-size:14px;background:{{ nwBtnBg }};display:flex;align-items:center;gap:8px"><i class="icon-check"></i>Salvar agendamento</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:58px;left:16px;right:16px;z-index:70;background:#fff;border:1px solid #d8ece2;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px #4c246522;font-size:13px;color:#24252b"><i class="icon-circle-check" style="color:#399470;font-size:18px"></i>{{ toast }}</div>
+</sc-if>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:402,&quot;height&quot;:874},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],&quot;default&quot;:&quot;a&quot;,&quot;tsType&quot;:&quot;'a'|'b'|'c'&quot;,&quot;section&quot;:&quot;Início&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;app&quot;,&quot;login&quot;,&quot;onboarding&quot;],&quot;default&quot;:&quot;app&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inicio&quot;,&quot;agenda&quot;,&quot;crm&quot;,&quot;financeiro&quot;,&quot;avisos&quot;],&quot;default&quot;:&quot;inicio&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const SV=[{id:'s1',name:'Corte feminino',dur:60,price:12000,color:'#7c3aed'},{id:'s2',name:'Escova modelada',dur:45,price:8000,color:'#5283bd'},{id:'s3',name:'Coloração',dur:120,price:26000,color:'#bc8b3f'},{id:'s4',name:'Manicure',dur:40,price:4500,color:'#399470'},{id:'s5',name:'Design de sobrancelha',dur:30,price:5500,color:'#c86868'}];
+const PRO=[{id:'p1',name:'Marina Costa',first:'Marina',color:'#7C3AED'},{id:'p2',name:'Rafael Lima',first:'Rafael',color:'#5283bd'},{id:'p3',name:'Júlia Prado',first:'Júlia',color:'#399470'}];
+const CL=[['c1','Ana Beatriz Souza','(27) 99812-4410','Pessoa física','',2,'Hoje',false],['c2','Carla Mendes','(27) 99733-1020','Pessoa física','',3,'05/11/2026',false],['c3','Fernanda Rocha','(27) 98845-7712','Pessoa física','',2,'Hoje',false],['c4','Juliana Alves','(27) 99671-3305','Pessoa física','',3,'Não definido',false],['c5','Patrícia Nunes','(27) 99502-8841','Empresa','Clínica Bem Viver',1,'24/10/2026',true],['c6','Renata Oliveira','(27) 99218-6630','Pessoa física','',0,'Amanhã',false],['c7','Camila Torres','(27) 98107-2259','Pessoa física','',0,'Hoje',false],['c8','Beatriz Lima','(27) 99954-0187','Pessoa física','',1,'22/10/2026',true],['c9','Larissa Pinto','(27) 99340-5521','Pessoa física','',4,'Não definido',false]].map(([id,name,phone,type,company,stage,next,overdue])=>({id,name,phone,type,company,stage,next,overdue}));
+const STAGES=['Novo contato','Em negociação','Em atendimento','Pós-atendimento','Inativo'];
+const STAGE_COL=[['#717682','#f6f7f9','#e7e9ef'],['#a37b2b','#fffaed','#f1e5c8'],['#835aaf','#f3effb','#e6dcf3'],['#4d8b6f','#edf8f3','#d8ece2'],['#909099','#f5f5f6','#e9e9ec']];
+const SC={'Agendado':['#9866d5','#f3edfd'],'Confirmado':['#5283bd','#eef5ff'],'Em atendimento':['#bc8b3f','#fff8e9'],'Concluído':['#399470','#eaf8f0'],'Cancelado':['#c86868','#fdefef'],'Não compareceu':['#9b939f','#f2f1f4'],'Pago':['#399470','#eaf8f0'],'Pendente':['#bc8b3f','#fff8e9'],'Atrasado':['#c86868','#fdefef'],'Parcial':['#5283bd','#eef5ff']};
+const METHODS=['Pix','Dinheiro','Cartão de crédito','Cartão de débito','Transferência','Outro'];
+const KINDS=['Observação','Ligação','WhatsApp','E-mail','Reunião'];
+const DAYS=[['Seg',26,'segunda, 26/10'],['Ter',27,'terça, 27/10'],['Qua',28,'quarta, 28/10'],['Qui',29,'quinta, 29/10'],['Sex',30,'sexta, 30/10'],['Sáb',31,'sábado, 31/10'],['Dom',1,'domingo, 01/11']];
+const FULLDAY=['Segunda-feira, 26 de outubro','Terça-feira, 27 de outubro','Quarta-feira, 28 de outubro','Quinta-feira, 29 de outubro','Sexta-feira, 30 de outubro','Sábado, 31 de outubro','Domingo, 1 de novembro'];
+const TODAY=1,NOW=640;
+const RAW=[['a1',1,'08:30','c1','s1','p1','Concluído',1],['a2',1,'09:00','c2','s4','p3','Concluído',1],['a3',1,'10:00','c3','s3','p2','Em atendimento',0],['a4',1,'11:00','c4','s2','p1','Confirmado',0],['a5',1,'11:30','c5','s5','p3','Agendado',0],['a6',1,'13:30','c6','s1','p1','Confirmado',0],['a7',1,'14:00','c7','s4','p3','Agendado',0],['a8',1,'15:30','c8','s3','p2','Agendado',0],['a9',1,'17:00','c2','s2','p1','Agendado',0],['b1',0,'09:00','c4','s1','p1','Concluído',1],['b2',0,'10:30','c9','s5','p3','Cancelado',0],['b3',0,'14:00','c6','s3','p2','Concluído',1],['b4',0,'16:00','c1','s4','p3','Concluído',1],['d1',2,'09:00','c9','s5','p3','Cancelado',0],['d2',2,'10:00','c5','s1','p1','Agendado',0],['d3',2,'14:00','c3','s4','p3','Agendado',0],['d4',2,'16:00','c7','s3','p2','Agendado',0],['e1',3,'08:30','c8','s2','p1','Agendado',0],['e2',3,'13:00','c1','s3','p2','Agendado',0],['e3',3,'15:00','c6','s4','p3','Agendado',0],['f1',4,'09:00','c2','s1','p1','Agendado',0],['f2',4,'10:00','c4','s4','p3','Agendado',0],['f3',4,'11:00','c3','s2','p1','Agendado',0],['f4',4,'14:00','c5','s3','p2','Agendado',0],['f5',4,'16:30','c7','s5','p3','Agendado',0],['g1',5,'08:00','c6','s2','p1','Agendado',0],['g2',5,'09:00','c1','s4','p3','Agendado',0],['g3',5,'10:00','c8','s1','p1','Agendado',0],['g4',5,'13:00','c4','s3','p2','Agendado',0]];
+const toMin=s=>{const[h,m]=s.split(':').map(Number);return h*60+m};
+const pad2=n=>String(n).padStart(2,'0');
+const hhmm=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n/100);
+const ini=n=>n.split(' ').filter(Boolean).slice(0,2).map(s=>s[0]).join('').toUpperCase();
+const RC={c1:[['r1','Corte feminino','Agendamento','27/10/2026',12000,'Pago','Pix',''],['r2','Manicure','Agendamento','26/10/2026',4500,'Pago','Cartão de débito','']],c2:[['r3','Manicure','Agendamento','27/10/2026',4500,'Pago','Dinheiro',''],['r4','Escova modelada','Agendamento','27/10/2026',8000,'Pendente','Pix','27/10/2026']],c3:[['r5','Coloração','Agendamento','27/10/2026',26000,'Pendente','Pix','27/10/2026']],c4:[['r6','Corte feminino','Agendamento','26/10/2026',12000,'Pago','Pix','']],c5:[['r7','Pacote corporativo · outubro','Lançamento avulso','10/10/2026',48000,'Atrasado','Transferência','20/10/2026'],['r8','Design de sobrancelha','Agendamento','27/10/2026',5500,'Pendente','Pix','27/10/2026']],c6:[['r9','Coloração','Agendamento','26/10/2026',26000,'Pago','Cartão de crédito','']],c8:[['r10','Coloração','Agendamento','15/10/2026',26000,'Atrasado','Pix','15/10/2026']]};
+const IN={c1:[['WhatsApp','25/10/2026','Pediu sugestão de horário para coloração em novembro.'],['Observação','12/10/2026','Prefere atendimento com a Marina, no início da manhã.']],c3:[['Ligação','24/10/2026','Confirmou coloração para terça às 10h.']],c5:[['E-mail','21/10/2026','Orçamento do pacote corporativo enviado.'],['Reunião','08/10/2026','Alinhado atendimento mensal para 6 colaboradoras.']],c8:[['WhatsApp','20/10/2026','Lembrete de pagamento enviado. Retornar esta semana.']],c7:[['Observação','27/10/2026','Primeiro agendamento feito pelo link público.']]};
+const NT=[{id:'n1',title:'Novo agendamento',text:'Camila Torres agendou Manicure para hoje às 14:00.',time:'Há 12 min',read:false,icon:'icon-calendar-plus',appt:'a7'},{id:'n2',title:'Agendamento confirmado',text:'Juliana Alves confirmou Escova modelada às 11:00.',time:'Há 40 min',read:false,icon:'icon-circle-check',appt:'a4'},{id:'n3',title:'Lembrete',text:'Fernanda Rocha começa Coloração às 10:00 com Rafael.',time:'Hoje, 09:45',read:true,icon:'icon-bell',appt:'a3'},{id:'n4',title:'Agendamento cancelado',text:'Larissa Pinto cancelou Design de sobrancelha de quarta-feira.',time:'Ontem, 18:20',read:true,icon:'icon-calendar-x',appt:'d1'}];
+const COST={s1:2000,s2:1200,s3:7000,s4:800,s5:600};
+const AMETHOD={a1:'Pix',a2:'Dinheiro',b1:'Pix',b3:'Cartão de crédito',b4:'Cartão de débito'};
+const TX=[{id:'t1',type:'Despesa',desc:'Aluguel do salão',who:'',day:-1,date:'05/10',amount:250000,status:'Pago',method:'Transferência'},{id:'t5',type:'Receita',desc:'Pacote corporativo · outubro',who:'Patrícia Nunes',day:-1,date:'10/10',amount:48000,status:'Pendente',method:'Transferência'},{id:'t2',type:'Despesa',desc:'Produtos de coloração',who:'',day:0,date:'26/10',amount:38900,status:'Pago',method:'Cartão de crédito'},{id:'t3',type:'Receita',desc:'Venda · Kit de tratamento',who:'Ana Beatriz Souza',day:1,date:'27/10',amount:15900,status:'Pago',method:'Pix'},{id:'t4',type:'Despesa',desc:'Conta de energia',who:'',day:1,date:'27/10',amount:21400,status:'Pendente',method:'Pix'}];
+const EARLY={rev:1187000,costs:242000,pay:{'Pix':612000,'Cartão de crédito':318000,'Cartão de débito':167000,'Dinheiro':90000},weeks:[182000,341500,298000,365500]};
+const compact=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',notation:'compact',maximumFractionDigits:1}).format(v/100);
+const NEXT={'Agendado':['Confirmar agendamento','Confirmado'],'Confirmado':['Iniciar atendimento','Em atendimento'],'Em atendimento':['Concluir atendimento','Concluído']};
+const OB_TITLES=['Vamos configurar seu negócio','Sua rotina começa pelos horários','Quais serviços você oferece?','Você trabalha sozinho ou possui equipe?'];
+const OB_TYPES=['Salão de beleza','Barbearia','Estética','Clínica','Consultoria','Prestação de serviços'];
+const WD=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+
+class Component extends DCLogic {
+  state={screen:this.props.startScreen??'app',tab:this.props.startTab??'inicio',appts:RAW.map(([id,day,start,client,svc,pro,status,paid])=>({id,day,start:toMin(start),client,svc,pro,status,paid:!!paid})),clients:CL.map(c=>({...c})),rc:Object.fromEntries(Object.entries(RC).map(([k,v])=>[k,v.map(([id,desc,kind,date,amount,status,method,due])=>({id,desc,kind,date,amount,status,method,due}))])),inter:Object.fromEntries(Object.entries(IN).map(([k,v])=>[k,v.map(([kind,date,text])=>({kind,date,text}))])),notifs:NT.map(n=>({...n})),view:'Dia',day:TODAY,proFilter:'all',crmStage:'Todos',crmQ:'',detail:null,client:null,clTab:'inter',kind:'Observação',note:'',pay:null,payStatus:'Pago',payMethod:'Pix',newOpen:false,nw:{},nwQ:'',toast:'',loginEmail:'marina@studioaurora.com.br',loginPass:'',loginError:'',ob:0,obDone:false,obName:'',obBiz:'',obType:'Salão de beleza',obHours:[true,true,true,true,true,true,false],obSvcs:[{name:'Corte feminino',meta:'60 min · R$ 120,00'}],obSvc:'',obMode:'team',tx:TX.map(t=>({...t})),period:'semana',txFilter:'Todos',txs:null};
+  flash(t){clearTimeout(this._t);this.setState({toast:t});this._t=setTimeout(()=>this.setState({toast:''}),2200)}
+  componentWillUnmount(){clearTimeout(this._t)}
+  deco(a){const s=SV.find(x=>x.id===a.svc),p=PRO.find(x=>x.id===a.pro),c=this.state.clients.find(x=>x.id===a.client);const[sFg,sBg]=SC[a.status];return{...a,svcName:s.name,dur:s.dur,price:s.price,color:s.color,proFirst:p.first,proName:p.name,clientName:c.name,clientShort:c.name.split(' ')[0]+' '+(c.name.split(' ')[1]||'')[0]+'.',phone:c.phone,time:hhmm(a.start),end:hhmm(a.start+s.dur),endMin:a.start+s.dur,durLabel:s.dur+' min',sFg,sBg,cancelled:a.status==='Cancelado',open:()=>this.setState({detail:a.id})}}
+  setAppt(id,patch,msg){this.setState(s=>({appts:s.appts.map(a=>a.id===id?{...a,...patch}:a)}));if(msg)this.flash(msg)}
+  advance(a){if(NEXT[a.status]){const[,to]=NEXT[a.status];this.setAppt(a.id,{status:to},'Status atualizado para '+to+'.')}else if(a.status==='Concluído'&&!a.paid){this.setAppt(a.id,{paid:true},'Pagamento registrado.')}}
+  openNew(pre={}){this.setState({newOpen:true,detail:null,nw:{day:TODAY,pro:'p1',...pre},nwQ:''})}
+  freeSlots(day,pro,dur,except){if(day===6)return[];const end=day===5?17*60:19*60,busy=this.state.appts.filter(a=>a.day===day&&a.pro===pro&&a.status!=='Cancelado'&&a.id!==except).map(a=>[a.start,a.start+SV.find(s=>s.id===a.svc).dur]);const out=[];for(let t=480;t+dur<=end;t+=20){if(day===TODAY&&t<NOW)continue;if(t<780&&t+dur>720)continue;if(busy.some(([b,e])=>t<e&&t+dur>b))continue;out.push(t)}return out}
+  renderVals(){
+    const st=this.state,variant=this.props.variant??'a';
+    const all=st.appts.map(a=>this.deco(a));
+    const today=all.filter(a=>a.day===TODAY).sort((x,y)=>x.start-y.start);
+    const live=today.filter(a=>!a.cancelled);
+    const paidToday=live.filter(a=>a.paid),rev=paidToday.reduce((n,a)=>n+a.price,0),completed=live.filter(a=>a.status==='Concluído').length;
+    const pendingAll=Object.values(st.rc).flat().filter(r=>r.status!=='Pago'),overdue=pendingAll.filter(r=>r.status==='Atrasado');
+    const dueCount=st.clients.filter(c=>c.next==='Hoje'||c.overdue).length;
+    const go=tab=>()=>this.setState({tab,client:null,detail:null});
+    const unread=st.notifs.filter(n=>!n.read).length;
+    const upcoming=live.filter(a=>a.start>=NOW&&a.status!=='Concluído'&&a.status!=='Em atendimento');
+    const nx=upcoming[0];
+    // timeline (variant b)
+    const pf=st.proFilter;const tl=[];const list=live.filter(a=>pf==='all'||a.pro===pf);let nowPlaced=false;
+    const pushNow=()=>{if(!nowPlaced){nowPlaced=true;tl.push({isNow:true,time:hhmm(NOW),sub:'',timeColor:'#7435d5',dot:'10px',dotColor:'#7435d5',dotRing:'#f1ebfb',padT:'0px',minH:'34px'})}};
+    const base={isAppt:false,isGap:false,isBreak:false,isNow:false,opacity:1};
+    let cursor=480;const gap=(from,to)=>{if(pf==='all')return;if(from<720&&to>720){gap(from,720);tl.push({...base,isBreak:true,time:'12:00',sub:'',gapLabel:'12:00 – 13:00',timeColor:'#909099',dot:'8px',dotColor:'#d4d4d8',dotRing:'#f7f8fa',padT:'10px',minH:'52px'});gap(780,to);return}if(to-from>=30){if(to<=NOW)return;const f=Math.max(from,NOW>from&&NOW<to?Math.ceil(NOW/10)*10:from);if(to-f<30)return;if(f>=NOW)pushNow();tl.push({...base,isGap:true,time:hhmm(f),sub:(to-f)+' min',gapLabel:hhmm(f)+' – '+hhmm(to),timeColor:'#835aaf',dot:'8px',dotColor:'#fff',dotRing:'#d9cfee',padT:'10px',minH:'58px',fill:()=>this.openNew({pro:pf,day:TODAY,slot:f})})}};
+    list.forEach(a=>{gap(cursor,a.start);if(a.start>=NOW)pushNow();const past=a.endMin<=NOW;tl.push({...base,...a,isAppt:true,sub:a.durLabel,timeColor:past?'#9599a2':'#33343e',dot:'10px',dotColor:a.status==='Em atendimento'?'#dcae68':past?'#cfd1d8':a.color,dotRing:'#f7f8fa',padT:'12px',minH:'76px',opacity:past?.7:1});cursor=Math.max(cursor,a.endMin)});
+    gap(cursor,19*60);pushNow();
+    // agenda
+    const dayAppts=all.filter(a=>a.day===st.day);
+    const dayCols=PRO.map(p=>({...p,ini:ini(p.name),avBg:p.color+'13',events:dayAppts.filter(a=>a.pro===p.id).map(a=>({...a,top:((a.start-480)/60*64)+'px',height:(a.dur/60*64-2)+'px',bg:a.color+'14',opacity:a.cancelled?.4:1})),cells:Array.from({length:12},(_,i)=>{const h=480+i*60,closedLate=st.day===5&&h>=17*60,lunch=h===720,past=st.day<TODAY||(st.day===TODAY&&h+60<=NOW);return{bg:closedLate||lunch?'repeating-linear-gradient(45deg,#f1edf3,#f1edf3 5px,#faf7fc 5px,#faf7fc 10px)':past?'#fafbfc':'transparent',tap:()=>{if(closedLate||lunch||past)return;this.openNew({pro:p.id,day:st.day,slot:h})}}})}));
+    const weekCols=DAYS.map((d,i)=>({bg:i===TODAY?'#fcf8ff':i===6?'#fafbfc':'transparent',pick:()=>this.setState({day:i,view:'Dia'}),events:all.filter(a=>a.day===i).map(a=>({top:((a.start-480)/60*44)+'px',height:(a.dur/60*44-2)+'px',left:(PRO.findIndex(p=>p.id===a.pro)*33+2)+'%',color:a.color,opacity:a.cancelled?.3:.85}))}));
+    const strip=DAYS.map((d,i)=>{const sel=i===st.day,has=all.some(a=>a.day===i&&!a.cancelled);return{short:d[0],num:d[1],bg:sel?'#f1ebfb':'transparent',labelFg:sel?'#7132ce':'#737785',numFg:i===TODAY?'#fff':sel?'#7132ce':'#33343e',numBg:i===TODAY?'#7435d5':'transparent',dot:has?(sel?'#7435d5':'#c5b6d0'):'transparent',opacity:i===6?.45:1,pick:()=>this.setState({day:i})}});
+    const isDay=st.view==='Dia';
+    const dayCount=dayAppts.filter(a=>!a.cancelled).length,weekCount=all.filter(a=>!a.cancelled).length;
+    // CRM
+    const q=st.crmQ.trim().toLowerCase();
+    const enrich=c=>{const r=st.rc[c.id]||[];const pend=r.filter(x=>x.status!=='Pago').reduce((n,x)=>n+x.amount,0),rec=r.filter(x=>x.status==='Pago').reduce((n,x)=>n+x.amount,0);const[stFg,stBg,stBorder]=STAGE_COL[c.stage];return{...c,ini:ini(c.name),sub:c.company||c.phone,stageName:STAGES[c.stage],stFg,stBg,stBorder,pendingN:pend,received:money(rec),pending:money(pend),hasOverdue:r.some(x=>x.status==='Atrasado'),nextFg:c.overdue?'#b6683e':'#343741'}};
+    const crmRows=st.clients.filter(c=>(st.crmStage==='Todos'||STAGES[c.stage]===st.crmStage)&&(!q||c.name.toLowerCase().includes(q)||c.phone.includes(q)||(c.company||'').toLowerCase().includes(q))).map(c=>{const e=enrich(c);return{...e,stage:e.stageName,open:()=>this.setState({client:c.id,clTab:'inter',detail:null})}});
+    const stageTabs=['Todos',...STAGES].map(s=>{const sel=st.crmStage===s;return{label:s,count:s==='Todos'?st.clients.length:st.clients.filter(c=>STAGES[c.stage]===s).length,line:sel?'#7c3aed':'transparent',fg:sel?'#7030cc':'#787b87',weight:sel?600:400,cBg:sel?'#f0e9fc':'#f4f4f7',cFg:sel?'#7c3aed':'#81808b',pick:()=>this.setState({crmStage:s})}});
+    // client profile
+    let cl={};if(st.client){const c=st.clients.find(x=>x.id===st.client),e=enrich(c);cl={...e,sub:[c.type,c.company,c.phone].filter(Boolean).join(' · '),book:()=>this.openNew({client:c.id}),inter:st.inter[c.id]||[],stages:STAGES.map((s,i)=>{const sel=c.stage===i,[fg,bg,bd]=STAGE_COL[i];return{label:s,fg:sel?fg:'#787b87',bg:sel?bg:'#fff',border:sel?bd:'#e6e7ec',pick:()=>{this.setState(S=>({clients:S.clients.map(x=>x.id===c.id?{...x,stage:i}:x)}));this.flash('Relacionamento atualizado.')}}}),pays:(st.rc[c.id]||[]).map(r=>{const[sFg,sBg]=SC[r.status];return{...r,amount:money(r.amount),sFg,sBg,hasDue:r.status!=='Pago'&&!!r.due,dueFg:r.status==='Atrasado'?'#b6683e':'#8a8e98',edit:()=>this.setState({pay:{client:c.id,id:r.id},payStatus:r.status==='Pago'?'Pago':r.status==='Atrasado'?'Atrasado':'Pendente',payMethod:r.method||'Pix'})}}),noPays:!(st.rc[c.id]||[]).length}}
+    let pay={};if(st.pay){const r=st.rc[st.pay.client].find(x=>x.id===st.pay.id);pay={desc:r.desc,amount:money(r.amount)}}
+    const seg=(opts,cur,set)=>opts.map(o=>({label:o,fg:o===cur?'#202128':'#737785',bg:o===cur?'#fff':'transparent',shadow:o===cur?'0 1px 2px #18181b14':'none',pick:()=>set(o)}));
+    const chip=(opts,cur,set)=>opts.map(o=>({label:o,border:o===cur?'#7c3aed':'#e7dcef',bg:o===cur?'#7c3aed':'#fff',fg:o===cur?'#fff':'#626672',pick:()=>set(o)}));
+    // detail
+    let dt={};if(st.detail){const a=all.find(x=>x.id===st.detail);const ps=a.paid?'Pago':'Pendente';const[pFg,pBg]=SC[ps];dt={...a,dayLabel:DAYS[a.day][2],price:money(a.price),payStatus:ps,pFg,pBg,canAdvance:!!NEXT[a.status]||(a.status==='Concluído'&&!a.paid),advanceLabel:NEXT[a.status]?NEXT[a.status][0]:'Registrar pagamento',advance:()=>this.advance(a),canCancel:a.status==='Agendado'||a.status==='Confirmado',cancel:()=>{this.setAppt(a.id,{status:'Cancelado'},'Agendamento cancelado.');this.setState({detail:null})},openClient:()=>this.setState({client:a.client,detail:null,clTab:'inter'})}}
+    // new appointment
+    const nw=st.nw,nsv=SV.find(s=>s.id===nw.svc),nq=st.nwQ.trim().toLowerCase();
+    const setNw=p=>this.setState(s=>({nw:{...s.nw,...p}}));
+    const slots=nsv?this.freeSlots(nw.day,nw.pro,nsv.dur):[];
+    const nwClient=nw.client?enrich(st.clients.find(c=>c.id===nw.client)):{};
+    const ready=nw.client&&nsv&&nw.slot!=null&&slots.includes(nw.slot);
+    // finance
+    const P=st.period,inP=d=>P==='hoje'?d===TODAY:P==='semana'?d>=0:true,early=P==='mes';
+    const derived=all.filter(a=>a.status==='Concluído').map(a=>({id:'x'+a.id,type:'Receita',desc:a.svcName,who:a.clientName,day:a.day,date:pad2(DAYS[a.day][1])+'/10',amount:a.price,status:a.paid?'Pago':'Pendente',method:AMETHOD[a.id]||'Pix',agenda:true,cost:COST[a.svc],apptId:a.id}));
+    const allRows=[...derived,...st.tx],rows=allRows.filter(r=>inP(r.day)).sort((x,y)=>y.day-x.day);
+    const sum=l=>l.reduce((n,r)=>n+r.amount,0);
+    const recPaid=rows.filter(r=>r.type==='Receita'&&r.status==='Pago');
+    const fRev=sum(recPaid)+(early?EARLY.rev:0),fCosts=recPaid.filter(r=>r.agenda).reduce((n,r)=>n+r.cost,0)+(early?EARLY.costs:0),fExp=sum(rows.filter(r=>r.type==='Despesa'&&r.status==='Pago')),fRecv=sum(rows.filter(r=>r.type==='Receita'&&r.status!=='Pago'));
+    const fore=all.filter(a=>!a.cancelled&&a.status!=='Concluído'&&(P==='hoje'?a.day===TODAY:a.day>=TODAY)).reduce((n,a)=>n+a.price,0);
+    const dayRev=i=>sum(allRows.filter(r=>r.day===i&&r.type==='Receita'&&r.status==='Pago'));
+    const bars=early?[...EARLY.weeks.map((v,i)=>({label:'S'+(i+1),v})),{label:'S5',v:[0,1,2,3,4,5,6].reduce((n,i)=>n+dayRev(i),0),cur:true}]:DAYS.map((d,i)=>({label:d[0],v:dayRev(i),cur:i===TODAY}));
+    const bmax=Math.max(...bars.map(b=>b.v),1);
+    const payMap={};recPaid.forEach(r=>{payMap[r.method]=(payMap[r.method]||0)+r.amount});if(early)Object.entries(EARLY.pay).forEach(([k,v])=>{payMap[k]=(payMap[k]||0)+v});
+    const payList=Object.entries(payMap).sort((a,b)=>b[1]-a[1]).map(([name,v])=>({name,value:money(v),w:Math.max(3,v/(fRev||1)*100)+'%'}));
+    const txRows=rows.filter(r=>st.txFilter==='Todos'||r.type===st.txFilter).map(r=>{const inc=r.type==='Receita';const[sFg,sBg]=SC[r.status]||SC['Pendente'];return{...r,sub:(r.who||r.type)+' · '+r.date+' · '+r.method,amountLabel:(inc?'':'− ')+money(r.amount),amountFg:inc?'#399c7b':'#33343e',iconBg:inc?'#edf9f1':'#fef0f0',iconFg:inc?'#79bb97':'#d897a1',icon:inc?'icon-arrow-down-left':'icon-arrow-up',isAgenda:!!r.agenda,isManual:!r.agenda,sFg,sBg,open:()=>{if(r.agenda)this.setState({detail:r.apptId});else this.setState({txs:{id:r.id,type:r.type,desc:r.desc,amount:(r.amount/100).toFixed(2).replace('.',','),method:r.method,status:r.status==='Pago'?'Pago':'Pendente'}})}}});
+    const txs=st.txs||{};const setTxs=p=>this.setState(s=>({txs:{...s.txs,...p}}));
+    // onboarding
+    const obValid=[!!(st.obName.trim()&&st.obBiz.trim()),true,st.obSvcs.length>0,true];
+    return {
+      isLogin:st.screen==='login',isOnboarding:st.screen==='onboarding',isApp:st.screen==='app',
+      loginEmail:st.loginEmail,loginPass:st.loginPass,loginError:st.loginError,loginLabel:'Entrar',
+      onLoginEmail:e=>this.setState({loginEmail:e.target.value}),onLoginPass:e=>this.setState({loginPass:e.target.value,loginError:''}),
+      doLogin:()=>{if(!st.loginEmail.includes('@')||st.loginPass.length<4){this.setState({loginError:'Confira seu e-mail e senha e tente novamente.'});return}this.setState({screen:'app',tab:'inicio'});this.flash('Bem-vinda de volta, Marina.')},
+      goOnboarding:()=>this.setState({screen:'onboarding',ob:0,obDone:false}),goLogin:()=>this.setState({screen:'login'}),
+      obDone:st.obDone,obNotDone:!st.obDone,obStepNum:st.ob+1,obProgress:((st.ob+1)*25)+'%',obTitle:OB_TITLES[st.ob],ob0:st.ob===0,ob1:st.ob===1,ob2:st.ob===2,ob3:st.ob===3,
+      obName:st.obName,obBiz:st.obBiz,onObName:e=>this.setState({obName:e.target.value}),onObBiz:e=>this.setState({obBiz:e.target.value}),
+      obTypes:OB_TYPES.map(t=>({label:t,border:t===st.obType?'#7c3aed':'#e6e7ec',bg:t===st.obType?'#f1ebfb':'#fff',fg:t===st.obType?'#7132ce':'#4f5260',pick:()=>this.setState({obType:t})})),
+      obHours:WD.map((d,i)=>{const on=st.obHours[i];return{day:d,track:on?'#7c3aed':'#e1e3e8',knob:on?'17px':'2px',text:on?(i===5?'08:00–12:00 · 13:00–17:00':'08:00–12:00 · 13:00–19:00'):'Fechado',textColor:on?'#626672':'#9599a2',toggle:()=>this.setState(s=>({obHours:s.obHours.map((v,j)=>j===i?!v:v)}))}}),
+      obSvc:st.obSvc,onObSvc:e=>this.setState({obSvc:e.target.value}),addObSvc:()=>{if(st.obSvc.trim())this.setState(s=>({obSvcs:[...s.obSvcs,{name:s.obSvc.trim(),meta:'30 min · Preço a definir'}],obSvc:''}))},
+      obSvcs:st.obSvcs.map((s,i)=>({...s,remove:()=>this.setState(S=>({obSvcs:S.obSvcs.filter((_,j)=>j!==i)}))})),
+      obModes:[['alone','Trabalho sozinho'],['team','Tenho uma equipe']].map(([k,l])=>({label:l,border:st.obMode===k?'#c9b3e5':'#ebdcf5',bg:st.obMode===k?'#fcfaff':'#fff',ring:st.obMode===k?'#7c3aed':'#c5b6d0',dot:st.obMode===k?'#7c3aed':'transparent',pick:()=>this.setState({obMode:k})})),
+      obCanBack:st.ob>0,obBack:()=>this.setState(s=>({ob:s.ob-1})),obNextLabel:st.ob===3?'Concluir configuração':'Continuar',
+      obNext:()=>{if(!obValid[st.ob]){this.flash(st.ob===0?'Informe seu nome e o nome do negócio.':'Adicione pelo menos um serviço.');return}if(st.ob===3)this.setState({obDone:true});else this.setState(s=>({ob:s.ob+1}))},
+      finishOnboarding:()=>this.setState({screen:'app',tab:'inicio'}),
+      tabInicio:st.tab==='inicio',tabAgenda:st.tab==='agenda',tabCrm:st.tab==='crm',tabAvisos:st.tab==='avisos',
+      varA:variant==='a',varB:variant==='b',varC:variant==='c',
+      goAvisos:go('avisos'),goAgenda:()=>this.setState({tab:'agenda',day:TODAY,view:'Dia'}),goCrm:go('crm'),goCrmDue:()=>this.setState({tab:'crm',crmStage:'Todos'}),hasUnread:unread>0,
+      mRevenue:money(rev),mAppts:live.length,mCompleted:completed,mCompletedNote:completed+' atendimentos concluídos',mTicket:money(paidToday.length?Math.round(rev/paidToday.length):0),mAttended:completed,
+      todayCount:live.length,todayTop:live.slice(0,5),progressPct:Math.round(completed/Math.max(live.length,1)*100)+'%',
+      quick:[{label:'Novo agendamento',icon:'icon-calendar-days',go:()=>this.openNew()},{label:'Novo cliente',icon:'icon-user-plus',go:()=>this.flash('Cadastro de cliente disponível no painel completo.')},{label:'Abrir CRM',icon:'icon-users',go:go('crm')},{label:'Registrar venda',icon:'icon-receipt',go:()=>this.flash('Registro de venda disponível no painel completo.')}],
+      proChips:[{id:'all',name:'Todos',first:'Todos'},...PRO].map(p=>{const sel=pf===p.id;return{label:p.first,ini:p.id==='all'?'∗':ini(p.name),avBg:p.id==='all'?'#f0edf6':p.color+'13',avFg:p.color||'#847397',border:sel?'#c9b3e5':'#e6e7ec',bg:sel?'#f1ebfb':'#fff',fg:sel?'#7132ce':'#4f5260',pick:()=>this.setState({proFilter:p.id})}}),
+      timeline:tl,
+      remainingNote:upcoming.length?upcoming.length+' atendimentos pela frente hoje.':'Nenhum atendimento restante hoje.',
+      hasNext:!!nx,next:nx?{...nx,inLabel:'em '+(nx.start-NOW)+' min',advanceLabel:NEXT[nx.status]?NEXT[nx.status][0]:'Abrir',advance:()=>this.advance(nx)}:{},
+      inService:live.filter(a=>a.status==='Em atendimento').map(a=>({...a,pct:Math.min(100,Math.round((NOW-a.start)/a.dur*100))+'%'})),
+      later:upcoming.slice(1,6),dueCount,pendingTotal:money(pendingAll.reduce((n,r)=>n+r.amount,0)),overdueTotal:money(overdue.reduce((n,r)=>n+r.amount,0)),
+      toastWhats:()=>this.flash('Abrindo conversa no WhatsApp...'),toastCall:()=>this.flash('Iniciando ligação...'),toastEdit:()=>this.flash('Edição de cadastro disponível no painel completo.'),
+      viewOpts:seg(['Dia','Semana'],st.view,v=>this.setState({view:v})),isDayView:isDay,isWeekView:!isDay,
+      periodLabel:isDay?FULLDAY[st.day]:'26 out – 1 nov',periodCount:isDay?dayCount+' atendimentos':weekCount+' atendimentos na semana',strip,dayCols,dayClosed:st.day===6,dayOpen:st.day!==6,
+      hourLabels:Array.from({length:12},(_,i)=>({label:hhmm(480+i*60),top:(i===0?3:i*64-6)+'px'})),weekHours:Array.from({length:12},(_,i)=>({label:String(8+i),top:(i===0?3:i*44-6)+'px'})),weekCols,
+      showNow:isDay&&st.day===TODAY,nowTop:((NOW-480)/60*64)+'px',
+      legend:SV.map(s=>({name:s.name,color:s.color})),
+      crmQ:st.crmQ,onCrmQ:e=>this.setState({crmQ:e.target.value}),stageTabs,crmRows,crmEmpty:!crmRows.length,
+      notifs:st.notifs.map(n=>({...n,unread:!n.read,iconBg:n.read?'#f4f4f6':'#f1ebfb',iconFg:n.read?'#9599a2':'#7435d5',titleFg:n.read?'#4f5260':'#202128',open:()=>this.setState(s=>({notifs:s.notifs.map(x=>x.id===n.id?{...x,read:true}:x),detail:n.appt||null}))})),
+      markAllRead:()=>{this.setState(s=>({notifs:s.notifs.map(x=>({...x,read:true}))}));this.flash('Todas as notificações foram lidas.')},
+      tabsL:[['inicio','Início','icon-layout-dashboard'],['agenda','Agenda','icon-calendar-days']].map(([k,l,i])=>({label:l,icon:i,fg:st.tab===k?'#7c3aed':'#8a8e98',bg:st.tab===k?'#f6effd':'transparent',go:k==='agenda'?()=>this.setState({tab:'agenda',client:null}):go(k)})),
+      tabsR:[['crm','CRM','icon-users',0],['financeiro','Financeiro','icon-wallet',0]].map(([k,l,i,b])=>({label:l,icon:i,badge:b||0,fg:st.tab===k?'#7c3aed':'#8a8e98',bg:st.tab===k?'#f6effd':'transparent',go:go(k)})),
+      openNew:()=>this.openNew(),
+      hasClient:!!st.client,cl,closeClient:()=>this.setState({client:null}),
+      clTabs:[['inter','Interações'],['pay','Recebimentos']].map(([k,l])=>({label:l,line:st.clTab===k?'#7c3aed':'transparent',fg:st.clTab===k?'#7030cc':'#787b87',weight:st.clTab===k?600:400,pick:()=>this.setState({clTab:k})})),
+      clTabInter:st.clTab==='inter',clTabPay:st.clTab==='pay',
+      kindChips:chip(KINDS,st.kind,k=>this.setState({kind:k})),noteText:st.note,onNote:e=>this.setState({note:e.target.value}),
+      addNote:()=>{if(st.note.trim().length<2)return;this.setState(s=>({inter:{...s.inter,[s.client]:[{kind:s.kind,date:'27/10/2026',text:s.note.trim()},...(s.inter[s.client]||[])]},note:''}));this.flash('Interação registrada.')},
+      hasPay:!!st.pay,pay,closePay:()=>this.setState({pay:null}),
+      payStatusOpts:seg(['Pago','Pendente','Atrasado'],st.payStatus,v=>this.setState({payStatus:v})),methodOpts:chip(METHODS,st.payMethod,v=>this.setState({payMethod:v})),
+      savePay:()=>{const{client,id}=st.pay;this.setState(s=>({rc:{...s.rc,[client]:s.rc[client].map(r=>r.id===id?{...r,status:s.payStatus,method:s.payMethod}:r)},pay:null}));this.flash('Status de pagamento atualizado.')},
+      hasDetail:!!st.detail,dt,closeDetail:()=>this.setState({detail:null}),
+      newOpen:st.newOpen,closeNew:()=>this.setState({newOpen:false}),
+      nwHasClient:!!nw.client,nwNoClient:!nw.client,nwClient,clearNwClient:()=>setNw({client:null}),nwQ:st.nwQ,onNwQ:e=>this.setState({nwQ:e.target.value}),
+      nwClients:st.clients.filter(c=>!nq||c.name.toLowerCase().includes(nq)).slice(0,4).map(c=>({...c,ini:ini(c.name),pick:()=>setNw({client:c.id})})),
+      nwServices:SV.map(s=>{const sel=nw.svc===s.id;return{...s,meta:s.dur+' min · '+money(s.price),tint:s.color+'15',selected:sel,border:sel?'#c9b3e5':'#e6e7ec',bg:sel?'#fcfaff':'#fff',pick:()=>setNw({svc:s.id})}}),
+      nwPros:PRO.map(p=>{const sel=nw.pro===p.id;return{...p,ini:ini(p.name),avBg:p.color+'13',border:sel?'#c9b3e5':'#e6e7ec',bg:sel?'#f1ebfb':'#fff',fg:sel?'#7132ce':'#4f5260',pick:()=>setNw({pro:p.id})}}),
+      nwDays:DAYS.map((d,i)=>{const sel=nw.day===i,dis=i<TODAY||i===6;return{short:d[0],num:d[1],border:sel?'#7c3aed':'#e6e7ec',bg:sel?'#7c3aed':'#fff',fg:sel?'#fff':'#33343e',opacity:dis?.35:1,pick:()=>{if(!dis)setNw({day:i})}}}),
+      nwSlots:slots.map(t=>{const sel=nw.slot===t;return{label:hhmm(t),border:sel?'#7c3aed':'#e7dcef',bg:sel?'#7c3aed':'#fff',fg:sel?'#fff':'#5b3f86',pick:()=>setNw({slot:t})}}),
+      nwSlotsHint:!nsv?'Escolha um serviço para ver os horários livres.':!slots.length?'Nenhum horário disponível neste dia.':'',
+      nwTotal:nsv?money(nsv.price):'R$ 0,00',nwBtnBg:ready?'#7435d5':'#c4b5e8',
+      saveNew:()=>{if(!ready){this.flash(!nw.client?'Escolha um cliente.':!nsv?'Escolha um serviço.':'Escolha um horário disponível.');return}const id='n'+Date.now();this.setState(s=>({appts:[...s.appts,{id,day:nw.day,start:nw.slot,client:nw.client,svc:nw.svc,pro:nw.pro,status:'Agendado',paid:false}],newOpen:false,client:null,tab:'agenda',view:'Dia',day:nw.day}));this.flash('Agendamento criado.')},
+      toast:st.toast,
+      tabFin:st.tab==='financeiro',
+      periodOpts:seg(['Hoje','Semana','Mês'],{hoje:'Hoje',semana:'Semana',mes:'Mês'}[P],v=>this.setState({period:{Hoje:'hoje',Semana:'semana','Mês':'mes'}[v]})),
+      fRev:money(fRev),fCostExp:money(fCosts+fExp),fCostNote:'Serviços: '+money(fCosts),fProfit:money(fRev-fCosts-fExp),fRecv:money(fRecv),fForeNote:'Previsão futura: '+money(fore),
+      profitTip:()=>this.flash('Estimativa: receitas menos custos dos serviços e despesas pagas.'),
+      chartTitle:early?'Outubro, por semana':'26 out – 1 nov',chartBars:bars.map(b=>({label:b.label,val:b.v?compact(b.v):'',h:(b.v?Math.max(b.v/bmax*100,4):0)+'%',bg:b.cur?'#7c3aed':'#b095d8',labelFg:b.cur?'#7132ce':'#8a8e98'})),
+      payList,payEmpty:!payList.length,
+      txFilterOpts:chip(['Todos','Receita','Despesa'],st.txFilter,v=>this.setState({txFilter:v})),txRows,txEmpty:!txRows.length,txCount:rows.length+(early?142:0)+' movimentações no período',
+      newTx:()=>this.setState({txs:{id:null,type:'Despesa',desc:'',amount:'',method:'Pix',status:'Pago'}}),
+      hasTxs:!!st.txs,txs,txsTitle:txs.id?'Editar movimentação':'Nova movimentação',txsIsEdit:!!txs.id,closeTxs:()=>this.setState({txs:null}),
+      txTypeOpts:seg(['Receita','Despesa'],txs.type,v=>setTxs({type:v})),txStatusOpts:seg(['Pago','Pendente'],txs.status,v=>setTxs({status:v})),txMethodOpts:chip(METHODS,txs.method,v=>setTxs({method:v})),
+      onTxDesc:e=>setTxs({desc:e.target.value}),onTxAmount:e=>setTxs({amount:e.target.value.replace(/[^\d,]/g,'')}),
+      saveTx:()=>{const amt=Math.round(parseFloat((txs.amount||'').replace(/\./g,'').replace(',','.'))*100);if(!txs.desc.trim()||!(amt>0)){this.flash('Informe a descrição e o valor.');return}const rec={type:txs.type,desc:txs.desc.trim(),amount:amt,method:txs.method,status:txs.status};this.setState(s=>({tx:txs.id?s.tx.map(t=>t.id===txs.id?{...t,...rec}:t):[{id:'t'+Date.now(),who:'',day:TODAY,date:'27/10',...rec},...s.tx],txs:null}));this.flash(txs.id?'Movimentação atualizada.':'Movimentação registrada.')},
+      deleteTx:()=>{this.setState(s=>({tx:s.tx.filter(t=>t.id!==txs.id),txs:null}));this.flash('Movimentação excluída.')}
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/lucide-static@0.460.0/font/lucide.css">
+<style>body{margin:0}a{color:#7c3aed}a:hover{color:#6d28d9}button{font:inherit;cursor:pointer;border:0;background:none;padding:0;color:inherit;text-align:left}input{font:inherit}input:focus{outline:2px solid #7c3aed;outline-offset:2px}button:focus-visible{outline:2px solid #7c3aed;outline-offset:2px}</style>
+</helmet>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="position:relative;height:874px;background:#f8f9fc;color:#272431;font-family:'Inter','Segoe UI',Arial,sans-serif;letter-spacing:-.015em;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="position:absolute;inset:0;overflow-y:auto;padding:54px 0 40px">
+  <header style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #e8e5ee">
+    <div style="display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;letter-spacing:-.8px;color:#24212f"><img src="assets/nexo-mark.svg" width="30" height="30" style="border-radius:8px;display:block" alt="">Nexo <b style="font-weight:700">Gestão</b></div>
+    <span style="font-size:12px;color:#77717f">Agendamento on-line</span>
+  </header>
+  <div style="padding:18px 24px 6px">
+    <span style="font-size:10px;letter-spacing:1px;font-weight:700;color:#7c3aed">SEU PRÓXIMO ATENDIMENTO</span>
+    <h1 style="margin:10px 0 4px;font-size:26px;letter-spacing:-1px;line-height:1.2;font-weight:650">Studio Aurora</h1>
+    <p style="margin:0;color:#71717a">Salão de beleza</p>
+    <p style="display:flex;gap:10px;font-size:14px;margin:10px 0 0;align-items:flex-start;color:#272431"><i class="icon-map-pin" style="font-size:17px;margin-top:2px"></i>Rua das Palmeiras, 210 · Vitória, ES</p>
+    <a href="#" style="display:flex;gap:10px;font-size:14px;margin-top:8px;align-items:center;color:#272431;text-decoration:none"><i class="icon-phone" style="font-size:17px"></i>Falar com o estabelecimento</a>
+  </div>
+  <section style="margin:16px 16px 0;background:#fff;border:1px solid #e4e4e7;border-radius:16px;padding:23px 18px;box-shadow:0 8px 30px #27114905;min-height:430px">
+    <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+    <ol style="display:flex;justify-content:space-between;list-style:none;margin:0 0 26px;padding:0;gap:2px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6"><li style="display:flex;flex-direction:column;align-items:center;gap:7px;color:{{ s.fg }}"><span style="width:27px;height:27px;border-radius:50%;display:grid;place-items:center;font-size:13px;background:{{ s.bg }};color:{{ s.numFg }}"><sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}"><i class="icon-check" style="font-size:14px"></i></sc-if><sc-if value="{{ s.notDone }}" hint-placeholder-val="{{ true }}">{{ s.n }}</sc-if></span><small style="font-size:10px">{{ s.label }}</small></li></sc-for>
+    </ol>
+    <h2 style="margin:0;font-size:23px;letter-spacing:-.7px;line-height:1.25;font-weight:650">{{ title }}</h2>
+    <p style="color:#77717f;font-size:14px;margin:10px 0 22px;line-height:1.7">{{ subtitle }}</p>
+
+    <sc-if value="{{ s0 }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ services }}" as="o" hint-placeholder-count="5">
+        <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:14px;border:1px solid #e7e3ee;border-radius:12px;background:#fff;padding:16px 14px;width:100%" style-hover="border-color:#a78bfa;background:#faf8ff"><span style="width:42px;height:42px;background:#f5f3ff;color:#7c3aed;display:grid;place-items:center;border-radius:12px;flex-shrink:0;font-size:21px"><i class="icon-scissors"></i></span><span style="flex:1;min-width:0"><b style="display:block;font-size:16px;font-weight:600">{{ o.name }}</b><small style="display:block;margin-top:4px;color:#77717f;font-size:13px">{{ o.desc }}</small><small style="display:flex;align-items:center;gap:6px;margin-top:4px;color:#77717f;font-size:13px"><i class="icon-clock" style="font-size:13px"></i>{{ o.meta }}</small></span><i class="icon-chevron-right" style="font-size:18px;color:#a1a1aa"></i></button>
+      </sc-for></div>
+    </sc-if>
+    <sc-if value="{{ s1 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ pros }}" as="o" hint-placeholder-count="4">
+        <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:14px;border:1px solid #e7e3ee;border-radius:12px;background:#fff;padding:16px 14px;width:100%" style-hover="border-color:#a78bfa;background:#faf8ff"><span style="width:42px;height:42px;background:#f5f3ff;color:#7c3aed;display:grid;place-items:center;border-radius:{{ o.radius }};flex-shrink:0;font-weight:600;font-size:16px"><sc-if value="{{ o.isAny }}" hint-placeholder-val="{{ false }}"><i class="icon-users" style="font-size:21px"></i></sc-if>{{ o.letter }}</span><span style="flex:1;min-width:0"><b style="display:block;font-size:16px;font-weight:600">{{ o.name }}</b><small style="display:block;margin-top:4px;color:#77717f;font-size:13px">{{ o.title }}</small></span><i class="icon-chevron-right" style="font-size:18px;color:#a1a1aa"></i></button>
+      </sc-for></div>
+    </sc-if>
+    <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><button onClick="{{ prevMonth }}" style="width:34px;height:34px;display:grid;place-items:center;border-radius:8px;border:1px solid #e4e4e7;opacity:{{ prevOpacity }}"><i class="icon-chevron-left"></i></button><b style="font-size:15px;font-weight:600;text-transform:capitalize">{{ monthLabel }}</b><button onClick="{{ nextMonth }}" style="width:34px;height:34px;display:grid;place-items:center;border-radius:8px;border:1px solid #e4e4e7;opacity:{{ nextOpacity }}"><i class="icon-chevron-right"></i></button></div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center"><sc-for list="{{ weekHead }}" as="w" hint-placeholder-count="7"><span style="font-size:12px;color:#77717f;padding:6px 0">{{ w }}</span></sc-for>
+        <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35"><button onClick="{{ c.pick }}" style="height:2.35rem;border-radius:8px;text-align:center;font-size:14px;color:{{ c.fg }};background:{{ c.bg }};opacity:{{ c.opacity }};font-weight:{{ c.weight }}">{{ c.label }}</button></sc-for>
+      </div>
+      <p style="color:#77717f;font-size:12px;line-height:1.7;margin:14px 0 0">Dias de fechamento ficam indisponíveis. Escolha um dia para consultar a agenda dos profissionais.</p>
+    </sc-if>
+    <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;margin:0 0 20px;font-size:16px"><i class="icon-calendar-days" style="font-size:18px"></i>{{ dateLabel }}<button onClick="{{ toDate }}" style="margin-left:auto;color:#7c3aed;font-weight:600;font-size:14px">Alterar data</button></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"><sc-for list="{{ slots }}" as="s" hint-placeholder-count="9"><button onClick="{{ s.pick }}" style="border:1px solid #ddd3ef;border-radius:10px;padding:13px 6px;background:{{ s.bg }};color:{{ s.fg }};font-size:16px;text-align:center;font-variant-numeric:tabular-nums" style-hover="background:#7c3aed;color:#fff">{{ s.label }}</button></sc-for></div>
+    </sc-if>
+    <sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600">Nome completo<input value="{{ name }}" onChange="{{ onName }}" style="border:1px solid #d4d4d8;border-radius:10px;padding:12px;font-size:16px;background:#fff;color:#18181b"></label>
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600">WhatsApp ou telefone<input value="{{ phone }}" onChange="{{ onPhone }}" type="tel" placeholder="(27) 99999-9999" style="border:1px solid #d4d4d8;border-radius:10px;padding:12px;font-size:16px;background:#fff;color:#18181b"></label>
+        <label style="display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600">E-mail (opcional)<input value="{{ email }}" onChange="{{ onEmail }}" type="email" style="border:1px solid #d4d4d8;border-radius:10px;padding:12px;font-size:16px;background:#fff;color:#18181b"></label>
+        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}"><div style="background:#fff1f1;border:1px solid #f4d2d2;padding:12px 15px;border-radius:8px;color:#ad3939;font-size:13px">{{ formError }}</div></sc-if>
+        <p style="margin:0;color:#71717a;font-size:13px;line-height:1.5">Seus dados serão usados por Studio Aurora para organizar este atendimento.</p>
+        <button onClick="{{ toReview }}" style="display:flex;align-items:center;justify-content:center;gap:9px;min-height:53px;border-radius:9px;background:#7c3aed;color:#fff;font-size:15px;font-weight:600" style-hover="background:#6d28d9">Revisar agendamento<i class="icon-chevron-right" style="font-size:17px"></i></button>
+      </div>
+    </sc-if>
+    <sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
+      <dl style="display:grid;grid-template-columns:1fr 1.2fr;gap:15px 16px;padding:20px 0;border-top:1px solid #eee9f5;border-bottom:1px solid #eee9f5;margin:0 0 22px;font-size:14px"><sc-for list="{{ review }}" as="r" hint-placeholder-count="8"><dt style="color:#77717f">{{ r.k }}</dt><dd style="text-align:right;margin:0;overflow-wrap:anywhere;font-weight:550">{{ r.v }}</dd></sc-for></dl>
+      <button onClick="{{ confirm }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:9px;min-height:53px;border-radius:9px;background:#7c3aed;color:#fff;font-size:15px;font-weight:600" style-hover="background:#6d28d9">{{ confirmLabel }}<i class="icon-check" style="font-size:18px"></i></button>
+      <p style="color:#71717a;font-size:12px;line-height:1.7;margin:10px 0 0">O pagamento será combinado com o estabelecimento.</p>
+    </sc-if>
+    <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ back }}" style="display:flex;align-items:center;gap:8px;margin-top:22px;color:#696575;font-weight:600;font-size:14px;padding:10px 0"><i class="icon-arrow-left" style="font-size:16px"></i>Voltar</button></sc-if>
+    </sc-if>
+
+    <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+      <h2 style="margin:0;font-size:23px;letter-spacing:-.7px;line-height:1.25;font-weight:650">Tudo certo, {{ firstName }}!</h2>
+      <p style="color:#77717f;font-size:14px;margin:10px 0 22px;line-height:1.7">Guarde os detalhes abaixo. Esperamos por você!</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;color:#16a34a"><i class="icon-circle-check" style="font-size:46px"></i><b style="font-size:17px">Agendamento confirmado</b></div>
+      <dl style="display:grid;grid-template-columns:1fr 1.2fr;gap:15px 16px;padding:20px 0;border-top:1px solid #eee9f5;border-bottom:1px solid #eee9f5;margin:0 0 18px;font-size:14px"><sc-for list="{{ review }}" as="r" hint-placeholder-count="8"><dt style="color:#77717f">{{ r.k }}</dt><dd style="text-align:right;margin:0;overflow-wrap:anywhere;font-weight:550">{{ r.v }}</dd></sc-for></dl>
+      <p style="color:#71717a;font-size:12px;line-height:1.7;margin:0 0 16px">Para alterar ou cancelar, entre em contato com o estabelecimento. O pagamento será combinado no atendimento.</p>
+      <button onClick="{{ restart }}" style="width:100%;display:flex;align-items:center;justify-content:center;min-height:46px;border-radius:9px;border:1px solid #e3e2eb;background:#fff;color:#454052;font-weight:600" style-hover="background:#f7f5ff">Fazer outro agendamento</button>
+    </sc-if>
+  </section>
+  <footer style="text-align:center;font-size:12px;color:#8b8495;padding:22px 24px">Nexo Gestão · Sua agenda, clientes e resultados em um só lugar.</footer>
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:402,&quot;height&quot;:874}}">
+const SV=[['s1','Corte feminino','Lavagem, corte e finalização.',60,12000],['s2','Escova modelada','Escova com modelagem e acabamento.',45,8000],['s3','Coloração','Coloração completa com diagnóstico dos fios.',120,26000],['s4','Manicure','Cutilagem e esmaltação.',40,4500],['s5','Design de sobrancelha','Mapeamento e design com pinça.',30,5500]].map(([id,name,desc,dur,price])=>({id,name,desc,dur,price}));
+const PRO=[{id:'p1',name:'Marina Costa',title:'Cabeleireira'},{id:'p2',name:'Rafael Lima',title:'Colorista'},{id:'p3',name:'Júlia Prado',title:'Manicure e designer'}];
+const STEPS=['Serviço','Profissional','Data','Horário','Seus dados','Confirmar'];
+const TITLES=['Qual atendimento você deseja?','Com quem você prefere?','Escolha o melhor dia','Escolha um horário','Seus dados','Revise seu agendamento'];
+const SUBS=['Escolha o atendimento para continuar.','Você também pode escolher quem estiver disponível.','Horários exibidos no fuso de Brasília.','A disponibilidade é confirmada novamente ao reservar.','Usaremos estas informações para identificar seu atendimento.','Está tudo certo? Confirme para reservar seu horário.'];
+const MONTHS=[{label:'outubro de 2026',m:9,first:4,days:31},{label:'novembro de 2026',m:10,first:0,days:30}];
+const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n/100);
+const hhmm=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+const pad=n=>String(n).padStart(2,'0');
+class Component extends DCLogic {
+  state={step:0,svc:null,pro:'any',month:0,date:null,slot:null,name:'',phone:'',email:'',formError:'',busy:false,done:false};
+  componentWillUnmount(){clearTimeout(this._t)}
+  slotsFor(){const{date,pro}=this.state;if(!date)return[];const wd=new Date(2026,date.m,date.d).getDay();const end=wd===6?17*60:19*60,dur=SV.find(s=>s.id===this.state.svc).dur;const out=[];for(let t=480;t+dur<=end;t+=20){if(t<780&&t+dur>720)continue;if(date.m===9&&date.d===27&&t<660)continue;const h=(t*7+date.d*13+(pro==='any'?0:pro.charCodeAt(1)*5))%11;if(h<4)continue;out.push(t)}return out}
+  renderVals(){
+    const s=this.state,go=n=>this.setState({step:n,formError:''});
+    const svc=SV.find(x=>x.id===s.svc),proName=s.pro==='any'?'Marina Costa':PRO.find(p=>p.id===s.pro).name;
+    const mo=MONTHS[s.month];
+    const cells=[];for(let i=0;i<mo.first;i++)cells.push({label:'',fg:'#000',bg:'transparent',opacity:0,weight:400,pick:()=>{}});
+    for(let d=1;d<=mo.days;d++){const wd=(mo.first+d-1)%7,past=mo.m===9&&d<27,late=mo.m===10&&d>26,dis=past||late||wd===0,sel=s.date&&s.date.m===mo.m&&s.date.d===d,today=mo.m===9&&d===27;cells.push({label:d,fg:sel?'#fff':today?'#7c3aed':'#272431',bg:sel?'#7c3aed':today?'#f5f3ff':'transparent',opacity:dis?.3:1,weight:today||sel?600:400,pick:()=>{if(!dis)this.setState({date:{m:mo.m,d},slot:null,step:3})}})}
+    const dateLabel=s.date?pad(s.date.d)+'/'+pad(s.date.m+1)+'/2026':'';
+    const review=svc&&s.slot!=null?[['Estabelecimento','Studio Aurora'],['Serviço',svc.name],['Profissional',proName],['Data e horário',dateLabel+' · '+hhmm(s.slot)],['Duração',svc.dur+' minutos'],['Valor',money(svc.price)],['Nome',s.name],['WhatsApp / telefone',s.phone],...(s.email?[['E-mail',s.email]]:[])].map(([k,v])=>({k,v})):[];
+    return {
+      notDone:!s.done,done:s.done,
+      steps:STEPS.map((l,i)=>({label:l,n:i+1,done:i<s.step,notDone:i>=s.step,fg:i<=s.step?'#7c3aed':'#8b8495',bg:i<=s.step?'#7c3aed':'#f4f2f7',numFg:i<=s.step?'#fff':'#8b8495'})),
+      title:TITLES[s.step],subtitle:SUBS[s.step],
+      s0:s.step===0,s1:s.step===1,s2:s.step===2,s3:s.step===3,s4:s.step===4,s5:s.step===5,
+      services:SV.map(o=>({...o,meta:o.dur+' min · '+money(o.price),pick:()=>this.setState({svc:o.id,pro:'any',date:null,slot:null,step:1})})),
+      pros:[{id:'any',name:'Qualquer profissional disponível',title:'Encontre mais opções de horário.',isAny:true,letter:'',radius:'12px'},...PRO.map(p=>({...p,isAny:false,letter:p.name[0],radius:'50%'}))].map(p=>({...p,pick:()=>this.setState({pro:p.id,date:null,step:2})})),
+      monthLabel:mo.label,weekHead:['D','S','T','Q','Q','S','S'],cells,
+      prevMonth:()=>this.setState({month:0}),nextMonth:()=>this.setState({month:1}),prevOpacity:s.month===0?.35:1,nextOpacity:s.month===1?.35:1,
+      dateLabel,toDate:()=>go(2),
+      slots:svc?this.slotsFor().map(t=>({label:hhmm(t),bg:s.slot===t?'#7c3aed':'#fff',fg:s.slot===t?'#fff':'#5b21b6',pick:()=>this.setState({slot:t,step:4})})):[],
+      name:s.name,phone:s.phone,email:s.email,formError:s.formError,
+      onName:e=>this.setState({name:e.target.value}),onPhone:e=>this.setState({phone:e.target.value}),onEmail:e=>this.setState({email:e.target.value}),
+      toReview:()=>{if(s.name.trim().length<3||s.phone.replace(/\D/g,'').length<10){this.setState({formError:'Informe seu nome completo e um telefone com DDD.'});return}go(5)},
+      review,confirmLabel:s.busy?'Confirmando...':'Confirmar agendamento',
+      confirm:()=>{if(s.busy)return;this.setState({busy:true});this._t=setTimeout(()=>this.setState({busy:false,done:true}),900)},
+      canBack:s.step>0,back:()=>go(s.step-1),
+      firstName:s.name.split(' ')[0],
+      restart:()=>this.setState({step:0,svc:null,pro:'any',date:null,slot:null,done:false,month:0})
+    };
+  }
+}
+</script>
+</body>
+</html>
